@@ -51,4 +51,4 @@ def googleCallback():
     response = google.authorize_access_token()
     return json.dumps(response)
 
-app.run(host = '127.0.0.1', port = 5000, debug = True, ssl_context = ('cert.pem', 'key.pem')) #, ssl_context = 'adhoc'
+app.run(host = '127.0.0.1', port = 5000, debug = True, ssl_context = 'adhoc')
