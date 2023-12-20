@@ -1,13 +1,28 @@
-from flask import Flask, url_for, session
+from flask import Flask, url_for
+from flask_sqlalchemy import SQLAlchemy
 from authlib.integrations.flask_client import OAuth
-from dotenv import dotenv_values
+import dotenv
 import json
 
-app = Flask('FilmwebCloneBackend')
+#Pobranie danych konfiguracyjnych z pliku .env
+config = dotenv.dotenv_values('.env')
+
+app = Flask(__name__)
 app.secret_key = 'very hard to guess key'
 
-config = dotenv_values('.env')
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{config["MYSQL_USERNAME"]}:{config["MYSQL_PASSWORD"]}@localhost/{config["MYSQL_DATABASE_NAME"]}'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    first_name = db.Column(db.String(20), nullable = False)
+    last_name = db.Column(db.String(40), nullable = False)
+    email = db.Column(db.String(40), nullable = False)
+    account_type = db.Column(db.String(8), nullable = False)
+    creation_date = db.Column(db.Date, nullable = False)
+    
 oauth = OAuth(app)
 
 google = oauth.register(name = 'google',
@@ -28,6 +43,14 @@ facebook = oauth.register(name = 'facebook',
                           client_kwargs = {
                               'scope': 'email public_profile'              
                           })
+
+@app.route('/register')
+def register():
+    return
+
+@app.route('/login')
+def login():
+    return
 
 @app.route('/login/facebook')
 def requestFacebookLogin():
@@ -51,4 +74,5 @@ def googleCallback():
     response = google.authorize_access_token()
     return json.dumps(response)
 
+db.create_all()
 app.run(host = '127.0.0.1', port = 5000, debug = True, ssl_context = 'adhoc')
