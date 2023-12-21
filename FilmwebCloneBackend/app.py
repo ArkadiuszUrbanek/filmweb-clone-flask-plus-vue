@@ -1,5 +1,5 @@
 from flask import Flask, url_for
-from flask_sqlalchemy import SQLAlchemy
+from models import db, User
 from authlib.integrations.flask_client import OAuth
 import dotenv
 import json
@@ -8,21 +8,12 @@ import json
 config = dotenv.dotenv_values('.env')
 
 app = Flask(__name__)
-app.secret_key = 'very hard to guess key'
-
+app.config["SECRET_KEY"] = 'very hard to guess key'
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{config["MYSQL_USERNAME"]}:{config["MYSQL_PASSWORD"]}@localhost/{config["MYSQL_DATABASE_NAME"]}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+db.init_app(app)
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    first_name = db.Column(db.String(20), nullable = False)
-    last_name = db.Column(db.String(40), nullable = False)
-    email = db.Column(db.String(40), nullable = False)
-    account_type = db.Column(db.String(8), nullable = False)
-    creation_date = db.Column(db.Date, nullable = False)
-    
 oauth = OAuth(app)
 
 google = oauth.register(name = 'google',
@@ -74,5 +65,8 @@ def googleCallback():
     response = google.authorize_access_token()
     return json.dumps(response)
 
-db.create_all()
-app.run(host = '127.0.0.1', port = 5000, debug = True, ssl_context = 'adhoc')
+if __name__ == "__main__":
+    with app.app_context(): 
+        db.create_all()
+        
+    app.run(host = '127.0.0.1', port = 5000, debug = True, ssl_context = 'adhoc')
