@@ -1,0 +1,1 @@
+from .auth import oauth, auth_blueprint
