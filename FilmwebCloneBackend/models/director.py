@@ -1,5 +1,5 @@
+from . import db
 from .utils.artist import Artist
-from .utils.entity import Entity
 
-class Director(Entity, Artist):
+class Director(db.Model, Artist):
   pass

@@ -1,5 +1,5 @@
+from . import db
 from .utils.artist import Artist
-from .utils.entity import Entity
 
-class Actor(Entity, Artist):
+class Actor(db.Model, Artist):
   pass
