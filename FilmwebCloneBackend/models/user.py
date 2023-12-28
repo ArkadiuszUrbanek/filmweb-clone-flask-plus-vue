@@ -1,6 +1,6 @@
 from . import db
 from .utils.entity import Entity
-from .Enums.UserRoleEnum import UserRole
+from Enums.UserRoleEnum import UserRole
 
 class User(db.Model, Entity):
     first_name = db.Column(db.String(20), nullable = False)
