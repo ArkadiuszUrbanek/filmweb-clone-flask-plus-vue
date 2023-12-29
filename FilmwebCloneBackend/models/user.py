@@ -1,7 +1,7 @@
 from . import db
 from .blueprints.entity import Entity
 from .utils import utcnow
-from Enums.UserRoleEnum import UserRole
+from enums.UserRoleEnum import UserRole
 from flask_login import UserMixin
 
 class User(db.Model,Entity, UserMixin):

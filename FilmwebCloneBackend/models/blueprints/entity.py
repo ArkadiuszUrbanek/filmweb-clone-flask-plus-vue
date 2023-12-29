@@ -1,4 +1,4 @@
-from Models import db
+from models import db
 from ..utils.utcnow import utcnow
 
 class Entity():
