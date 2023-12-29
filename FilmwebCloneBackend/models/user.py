@@ -1,6 +1,5 @@
 from . import db
 from .blueprints.entity import Entity
-from .utils import utcnow
 from enums.UserRoleEnum import UserRole
 from flask_login import UserMixin
 
