@@ -1,6 +1,6 @@
 from enum import Enum
 
 class UserRole(Enum):
-  ADMIN = 'ADMIN'
-  USER = 'USER'
   GUEST = 'GUEST'
+  USER = 'USER'
+  ADMINISTRATOR = 'ADMINISTRATOR'

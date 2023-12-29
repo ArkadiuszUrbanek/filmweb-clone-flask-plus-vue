@@ -14,7 +14,7 @@ if __name__ == '__main__':
     app.config['SESSION_COOKIE_HTTPONLY'] = True
     app.config['SESSION_COOKIE_SECURE'] = True
     app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-
+    
     app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{config["MYSQL_USERNAME"]}:{config["MYSQL_PASSWORD"]}@localhost/{config["MYSQL_DATABASE_NAME"]}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -29,12 +29,12 @@ if __name__ == '__main__':
             'methods': ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
             'expose_headers': None,
             'allow_headers': ['*'],
-            'supports_credentials': True, 
-            } 
+            'supports_credentials': True,
+            }
         })
 
-    with app.app_context(): 
+    with app.app_context():
         db.create_all()
-    
+
     app.register_blueprint(auth_blueprint)
     app.run(host = '127.0.0.1', port = 5000, debug = True, ssl_context = 'adhoc')
