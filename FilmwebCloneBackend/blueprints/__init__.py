@@ -1,1 +1,1 @@
-from .auth import oauth, auth_blueprint
+from .auth import oauth, auth_blueprint, bcrypt, login_manager

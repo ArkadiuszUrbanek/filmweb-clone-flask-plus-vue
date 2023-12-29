@@ -1,5 +1,9 @@
 from authlib.integrations.flask_client import OAuth
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
 from dotenv import dotenv_values
+
+from models import User
 
 oauth = OAuth()
 
@@ -23,5 +27,14 @@ facebook = oauth.register(name = 'facebook',
                           client_kwargs = {
                               'scope': 'email public_profile'              
                           })
+
+bcrypt = Bcrypt()
+
+login_manager = LoginManager()
+login_manager.session_protection = 'strong'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 from .routes import auth_blueprint
