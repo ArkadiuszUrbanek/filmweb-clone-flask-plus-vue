@@ -1,5 +1,5 @@
 from models import db
-from ..utils.utcnow import utcnow
+from .utils import utcnow
 
 class Entity():
   id = db.Column(db.Integer, primary_key = True)

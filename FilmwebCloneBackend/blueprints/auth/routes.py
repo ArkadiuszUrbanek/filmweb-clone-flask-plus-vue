@@ -1,7 +1,7 @@
 from flask import Blueprint, url_for, jsonify, request
 from flask_login import login_user, logout_user, login_required
 from . import oauth, bcrypt
-from models import db, User
+from models import db, User, UserRole, UserAccountType
 import json
 
 auth_blueprint = Blueprint('auth_blueprint', __name__, url_prefix = '/auth')
@@ -15,8 +15,8 @@ def register():
             last_name = request.args.get('last_name'),
             email = request.args.get('email'),
             password_hash = hashed_password,
-            account_type = 'app',
-            role = 'user'
+            account_type = UserAccountType.APP,
+            role = UserRole.USER
         )
     )
     db.session.commit()
