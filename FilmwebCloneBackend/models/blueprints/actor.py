@@ -1,5 +1,5 @@
-from . import db
-from .movie_actor import movie_actor
+from .. import db
+from ..movie_actor import movie_actor
 from .artist import Artist
 
 class Actor(db.Model, Artist):
