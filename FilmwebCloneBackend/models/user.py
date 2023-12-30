@@ -1,5 +1,5 @@
 from . import db
-from .entity import Entity
+from .blueprints.entity import Entity
 from enums import UserRole, UserAccountType
 from flask_login import UserMixin
 

@@ -1,5 +1,5 @@
 from . import db
-from .entity import Entity
+from .blueprints.entity import Entity
 
 class Review(db.Model, Entity):
   mark = db.Column(db.Integer, nullable = False)
