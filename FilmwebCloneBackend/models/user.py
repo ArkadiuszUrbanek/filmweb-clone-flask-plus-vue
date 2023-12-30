@@ -1,9 +1,5 @@
 from . import db
-<<<<<<< HEAD
-from .entity import Entity
-=======
 from .blueprints.entity import Entity
->>>>>>> master
 from enums import UserRole, UserAccountType
 from flask_login import UserMixin
 
