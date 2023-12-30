@@ -2,7 +2,7 @@ from . import db
 from .movie_actor import movie_actor
 from .movie_director import movie_director
 from .movie_genre import movie_genre
-from .entity import Entity
+from .blueprints.entity import Entity
 from .utils.utc_now import utcnow
 
 class Movie(db.Model, Entity):

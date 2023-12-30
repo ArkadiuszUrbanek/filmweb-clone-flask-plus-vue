@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 from .user import User
-from .blueprints.actor import Actor
+from .actor import Actor
 from .director import Director
 from .forum import Forum
 from .genre import Genre

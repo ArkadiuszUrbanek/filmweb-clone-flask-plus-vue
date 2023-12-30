@@ -1,5 +1,5 @@
 from . import db
-from .entity import Entity
+from .blueprints.entity import Entity
 
 class Forum(db.Model, Entity):
   name = db.Column(db.String(100), nullable = False)
