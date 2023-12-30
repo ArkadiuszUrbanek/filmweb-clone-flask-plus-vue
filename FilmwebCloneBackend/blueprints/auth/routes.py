@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, jsonify, request
+from flask import Blueprint, url_for, request
 from flask_login import login_user, logout_user, login_required
 from . import oauth, bcrypt
 from models import db, User, UserRole, UserAccountType
