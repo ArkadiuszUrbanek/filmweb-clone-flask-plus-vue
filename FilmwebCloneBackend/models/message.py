@@ -6,6 +6,5 @@ class Message(db.Model, Entity):
 
   forum = db.relationship('Forum', back_populates = 'messages')
   author = db.relationship('User', back_populates = 'messages')
-  main_message = db.relationship('Message', back_populates = 'answer_messages', cascade = 'all, delete')
-  answer_message_id = db.Column(db.Integer, db.ForeignKey('message.id'), nullable = True)
-  answer_messages = db.relationship('Message', back_populates = 'main_message')
+  main_message_id = db.Column(db.Integer, db.ForeignKey('message.id'), nullable = True)
+  main_message = db.relationship('Message', backref = 'main_message', remote_side='message.id', cascade = 'all, delete')

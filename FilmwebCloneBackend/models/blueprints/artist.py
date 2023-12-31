@@ -1,5 +1,5 @@
 from .. import db
-from ..entity import Entity
+from .entity import Entity
 
 class Artist(Entity):
   first_name = db.Column(db.String(20), nullable = False)
