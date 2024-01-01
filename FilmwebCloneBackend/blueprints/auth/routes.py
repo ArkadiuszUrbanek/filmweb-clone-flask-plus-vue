@@ -1,6 +1,7 @@
 from flask import Blueprint, url_for, request
 from flask_login import login_user, logout_user, login_required
 from . import oauth, bcrypt
+from .. import csrf
 from models import db, User
 from enums import UserRole, UserAccountType
 import json
@@ -8,6 +9,7 @@ import json
 auth_blueprint = Blueprint('auth_blueprint', __name__, url_prefix = '/auth')
 
 @auth_blueprint.route('/register', methods = ['POST'])
+@csrf.exempt
 def register():
     hashed_password = bcrypt.generate_password_hash(request.args.get('password'))
     db.session.add(
@@ -24,6 +26,7 @@ def register():
     return
 
 @auth_blueprint.route('/login', methods = ['POST'])
+@csrf.exempt
 def login():
     user = User.query.filter_by(email = request.args.get('email')).first()
     if user is not None and bcrypt.check_password_hash(user.password_hash, request.args.get('password')):
@@ -31,29 +34,33 @@ def login():
         return
     return
 
-@auth_blueprint.route('/login/facebook')
+@auth_blueprint.route('/login/facebook', methods = ['GET'])
+@csrf.exempt
 def requestFacebookLogin():
     facebook = oauth.create_client('facebook')
     return facebook.authorize_redirect(redirect_uri = url_for('auth_blueprint.facebookCallback', _external = True))
 
-@auth_blueprint.route('/login/google')
+@auth_blueprint.route('/login/google', methods = ['GET'])
+@csrf.exempt
 def requestGoogleLogin():
     google = oauth.create_client('google')
     return google.authorize_redirect(redirect_uri = url_for('auth_blueprint.googleCallback', _external = True))
 
-@auth_blueprint.route('/login/facebook/callback')
+@auth_blueprint.route('/login/facebook/callback', methods = ['GET'])
+@csrf.exempt
 def facebookCallback():
     facebook = oauth.create_client('facebook')
     response = facebook.authorize_access_token()
     return json.dumps(response)
 
-@auth_blueprint.route('/login/google/callback')
+@auth_blueprint.route('/login/google/callback', methods = ['GET'])
+@csrf.exempt
 def googleCallback():
     google = oauth.create_client('google')
     response = google.authorize_access_token()
     return json.dumps(response)
 
-@auth_blueprint.route("/logout")
+@auth_blueprint.route("/logout", methods = ['GET'])
 @login_required
 def logout():
     logout_user()
