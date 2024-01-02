@@ -1,4 +1,4 @@
-from models import db
+from .. import db
 from .entity import Entity
 
 class Artist(Entity):
