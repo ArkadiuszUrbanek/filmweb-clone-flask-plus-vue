@@ -2,7 +2,7 @@ from . import db
 from .utils.utc_now import utcnow
 
 class Message(db.Model):
-  __tablename__ = "message"
+  __tablename__ = 'message'
 
   id = db.Column(db.Integer, primary_key = True, autoincrement=True)
   text = db.Column(db.String(500), nullable = False)

@@ -2,7 +2,7 @@ from . import db
 from .utils.utc_now import utcnow
 
 class Forum(db.Model):
-  __tablename__ = "forum"
+  __tablename__ = 'forum'
 
   id = db.Column(db.Integer, primary_key = True, autoincrement=True)
   name = db.Column(db.String(100), nullable = False)

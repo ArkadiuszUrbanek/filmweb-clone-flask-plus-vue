@@ -5,7 +5,7 @@ from .movie_genre import movie_genre
 from .utils.utc_now import utcnow
 
 class Movie(db.Model):
-  __tablename__ = "movie"
+  __tablename__ = 'movie'
 
   id = db.Column(db.Integer, primary_key = True, autoincrement=True)
   title = db.Column(db.String(100), nullable = False)

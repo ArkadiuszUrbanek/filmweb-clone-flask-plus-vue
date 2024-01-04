@@ -2,7 +2,7 @@ from . import db
 from .utils.utc_now import utcnow
 
 class Review(db.Model):
-  __tablename__ = "review"
+  __tablename__ = 'review'
 
   id = db.Column(db.Integer, primary_key = True, autoincrement=True)
   mark = db.Column(db.Integer, nullable = False)

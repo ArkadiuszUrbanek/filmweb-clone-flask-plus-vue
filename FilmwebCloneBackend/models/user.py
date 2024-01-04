@@ -4,7 +4,7 @@ from enums import UserRole, UserAccountType
 from .utils.utc_now import utcnow
 
 class User(db.Model, UserMixin):
-  __tablename__ = "user"
+  __tablename__ = 'user'
 
   id = db.Column(db.Integer, primary_key = True, autoincrement=True)
   first_name = db.Column(db.String(20), nullable = False)

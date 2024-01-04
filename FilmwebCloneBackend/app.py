@@ -40,8 +40,6 @@ CORS(app, resources={
 
 with app.app_context():
     db.create_all()
-    user = UserRepository()
-    user.test()
 
 @app.after_request
 def set_csrf_cookie(response):
