@@ -15,10 +15,11 @@ class User(db.Model, UserMixin):
   role = db.Column(db.Enum(UserRole), nullable = False)
   creation_date = db.Column(db.DateTime, nullable = False, server_default = utcnow())
   modification_date = db.Column(db.DateTime, nullable = False, server_default = utcnow())
+  csrf_token_secret_key = None   
 
-  forums = db.relationship('Forum', backref = 'user', lazy=True)
-  messages = db.relationship('Message', backref = 'user', lazy=True, cascade = 'all, delete')
-  reviews = db.relationship('Review', backref = 'user', lazy=True)
+  forums = db.relationship('Forum', backref = 'user', lazy = True)
+  messages = db.relationship('Message', backref = 'user', lazy = True, cascade = 'all, delete')
+  reviews = db.relationship('Review', backref = 'user', lazy = True)
 
   def __init__(self, first_name, last_name, email, password_hash, account_type, role, **kwargs):
     super(User, self).__init__(**kwargs)
