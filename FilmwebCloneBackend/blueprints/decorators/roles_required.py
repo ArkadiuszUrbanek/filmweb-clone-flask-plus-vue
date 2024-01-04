@@ -4,16 +4,14 @@ from functools import wraps
 from http import HTTPStatus
 
 def roles_required(*roles):
-    def wrapper(fn):
-        @wraps(fn)
-        def decorator(*args, **kwargs):
-            if not current_user.is_authenticated:
-                return Response(status = HTTPStatus.UNAUTHORIZED)
-
+    def decorator(func):
+        @wraps(func)
+        def wrapped(*args, **kwargs):
             if current_user.role not in roles:
-                return Response(status = HTTPStatus.FORBIDDEN)
+                return Response(response = 'The current role does not allow the request to be processed.', 
+                                status = HTTPStatus.FORBIDDEN, 
+                                content_type = 'text/plain')
 
-            return fn(*args, **kwargs)
-
-        return decorator
-    return wrapper
+            return func(*args, **kwargs)
+        return wrapped
+    return decorator

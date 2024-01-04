@@ -10,6 +10,7 @@ class User(db.Model, Entity, UserMixin):
     password_hash = db.Column(db.String, nullable = False)
     account_type = db.Column(db.Enum(UserAccountType), nullable = False)
     role = db.Column(db.Enum(UserRole), nullable = False)
+    csrf_token_secret_key = None
 
     forum_id = db.Column(db.Integer, db.ForeignKey('forum.id'), nullable = True)
     forums = db.relationship('Forum', back_populates = 'author', cascade = 'all, delete')

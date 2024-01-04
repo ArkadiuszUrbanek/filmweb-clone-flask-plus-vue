@@ -2,8 +2,7 @@ from authlib.integrations.flask_client import OAuth
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from dotenv import dotenv_values
-
-from models import User
+from models import User, AnonymousUser
 
 oauth = OAuth()
 
@@ -32,6 +31,7 @@ bcrypt = Bcrypt()
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
+login_manager.anonymous_user = AnonymousUser
 
 @login_manager.user_loader
 def load_user(user_id):
