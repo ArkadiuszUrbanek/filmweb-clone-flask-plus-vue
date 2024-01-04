@@ -2,6 +2,9 @@ import datetime
 from models import db
 from models.user import User
 
+from enums.user_account_type import UserAccountType
+from enums.user_role import UserRole
+
 class UserRepository():
 
   def findAll(self):

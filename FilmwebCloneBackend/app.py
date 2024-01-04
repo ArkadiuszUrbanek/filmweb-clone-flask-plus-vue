@@ -5,6 +5,8 @@ from models import db
 from blueprints import oauth, auth_blueprint, bcrypt, login_manager, csrf
 from dotenv import dotenv_values
 
+from repositories import UserRepository
+
 config = dotenv_values('.env')
 
 app = Flask(__name__)
@@ -38,6 +40,8 @@ CORS(app, resources={
 
 with app.app_context():
     db.create_all()
+    user = UserRepository()
+    user.test()
 
 @app.after_request
 def set_csrf_cookie(response):

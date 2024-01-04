@@ -1,8 +1,10 @@
 from . import db
-from .movie_genre import movie_genre
-from .blueprints.entity import Entity
+from .utils.utc_now import utcnow
 
-class Genre(db.Model, Entity):
+class Genre(db.Model):
+  __tablename__ = "genre"
+
+  id = db.Column(db.Integer, primary_key = True, autoincrement=True)
   name = db.Column(db.String(100), nullable = False)
-
-  movies = db.relationship('Movie', secondary = movie_genre, back_populates = 'genres')
+  creation_date = db.Column(db.DateTime, nullable = False, server_default = utcnow())
+  modification_date = db.Column(db.DateTime, nullable = False, server_default = utcnow())
