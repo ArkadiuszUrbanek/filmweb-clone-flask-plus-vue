@@ -1,13 +1,11 @@
 from flask import Flask, Response, current_app, request
 from flask_login import current_user
 from flask_cors import CORS
-from flask_wtf.csrf import generate_csrf, CSRFError
-from werkzeug.exceptions import NotFound
+from flask_wtf.csrf import generate_csrf
 from models import db
-from blueprints import oauth, auth_blueprint, bcrypt, login_manager, csrf, protected_funcs
+from blueprints import oauth, auth_blueprint, bcrypt, login_manager, csrf, protected_funcs, error_blueprint
 from dotenv import dotenv_values
 from secrets import token_hex
-from http import HTTPStatus
 
 config = dotenv_values('.env')
 
@@ -68,19 +66,8 @@ def set_csrf_cookie(response: Response):
                         samesite = None)
     return response
 
-@app.errorhandler(CSRFError)
-def handle_csrf_error(e):
-    return Response(response = e.description, status = HTTPStatus.BAD_REQUEST, content_type = 'text/plain')
-
-@login_manager.unauthorized_handler
-def unauthorized_callback():
-    return Response(response = 'Login is required.', status = HTTPStatus.UNAUTHORIZED, content_type = 'text/plain')
-
-@app.errorhandler(NotFound)
-def handle_not_found(e):
-    return Response(response = e.description, status = HTTPStatus.NOT_FOUND, content_type = 'text/plain')
-
 app.register_blueprint(auth_blueprint)
+app.register_blueprint(error_blueprint)
 
 if __name__ == '__main__':
     app.run(host = '127.0.0.1', port = 5000, debug = True, ssl_context = 'adhoc')

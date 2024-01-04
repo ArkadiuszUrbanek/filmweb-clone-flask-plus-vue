@@ -3,6 +3,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from dotenv import dotenv_values
 from models import User, AnonymousUser
+from werkzeug.exceptions import Unauthorized
 
 oauth = OAuth()
 
@@ -36,5 +37,9 @@ login_manager.anonymous_user = AnonymousUser
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    raise Unauthorized(description = 'Login is required.')
 
 from .routes import auth_blueprint
