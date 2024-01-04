@@ -5,8 +5,6 @@ from models import db
 from blueprints import oauth, auth_blueprint, bcrypt, login_manager, csrf
 from dotenv import dotenv_values
 
-from repositories import UserRepository
-
 config = dotenv_values('.env')
 
 app = Flask(__name__)
