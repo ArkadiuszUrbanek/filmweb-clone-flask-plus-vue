@@ -1,11 +1,15 @@
 from . import db
-from .blueprints.entity import Entity
+from .utils.utc_now import utcnow
 
-class Message(db.Model, Entity):
+class Message(db.Model):
+  __tablename__ = 'message'
+
+  id = db.Column(db.Integer, primary_key = True, autoincrement=True)
   text = db.Column(db.String(500), nullable = False)
+  creation_date = db.Column(db.DateTime, nullable = False, server_default = utcnow())
+  modification_date = db.Column(db.DateTime, nullable = False, server_default = utcnow())
 
-  forum = db.relationship('Forum', back_populates = 'messages')
-  author = db.relationship('User', back_populates = 'messages')
-  main_message = db.relationship('Message', back_populates = 'answer_messages', cascade = 'all, delete')
-  answer_message_id = db.Column(db.Integer, db.ForeignKey('message.id'), nullable = True)
-  answer_messages = db.relationship('Message', back_populates = 'main_message')
+  forum_id = db.Column(db.Integer, db.ForeignKey('forum.id'), nullable = False)
+  user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
+  main_message = db.Column(db.Integer, db.ForeignKey('message.id'), nullable = True)
+  messages= db.relationship('Message', backref = db.backref('parent', lazy='subquery'), remote_side = id, cascade = 'all, delete')
