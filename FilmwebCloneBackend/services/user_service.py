@@ -1,6 +1,5 @@
 from blueprints import UserMappers
 from dtos import CreateUserDto
-from models import db
 from repositories import UserRepository
 
 class UserService():
