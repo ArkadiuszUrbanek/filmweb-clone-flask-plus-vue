@@ -12,4 +12,8 @@ class Message(db.Model):
   forum_id = db.Column(db.Integer, db.ForeignKey('forum.id'), nullable = False)
   user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
   main_message = db.Column(db.Integer, db.ForeignKey('message.id'), nullable = True)
-  messages= db.relationship('Message', backref = db.backref('parent', lazy='subquery'), remote_side = id, cascade = 'all, delete')
+  messages = db.relationship('Message', backref = db.backref('parent', lazy='subquery'), remote_side = id, cascade = 'all, delete')
+
+  def __init__(self, text, **kwargs):
+    super(Message, self).__init__(**kwargs)
+    self.text = text
