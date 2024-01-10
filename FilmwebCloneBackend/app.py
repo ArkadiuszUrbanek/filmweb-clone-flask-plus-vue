@@ -1,14 +1,18 @@
 from flask import Flask
 from flask_cors import CORS
+from flask_session import Session
 from models import db
-from blueprints import oauth, auth_blueprint, bcrypt, login_manager, csrf, errors_blueprint, interceptors_blueprint
+from blueprints import oauth, auth_blueprint, bcrypt, login_manager, csrf, errors_blueprint, interceptors_blueprint, mail
 from dotenv import dotenv_values
+from ast import literal_eval
 
 config = dotenv_values('.env')
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = config['APP_SECRET_KEY']
+app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_COOKIE_DOMAIN'] = '127.0.0.1'
 app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_HTTPONLY'] = True
@@ -20,13 +24,21 @@ app.config['WTF_CSRF_ENABLED'] = True
 app.config['WTF_CSRF_CHECK_DEFAULT'] = False
 app.config['WTF_CSRF_SSL_STRICT'] = False
 app.config['WTF_CSRF_METHODS'] = {'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'}
+app.config['MAIL_SERVER'] = config['MAIL_SERVER']
+app.config['MAIL_PORT'] = int(config['MAIL_PORT'])
+app.config['MAIL_USERNAME'] = config['MAIL_USERNAME']
+app.config['MAIL_PASSWORD'] = config['MAIL_PASSWORD']
+app.config['MAIL_USE_TLS'] = literal_eval(config['MAIL_USE_TLS'])
+app.config['MAIL_USE_SSL'] = literal_eval(config['MAIL_USE_SSL'])
 
 db.init_app(app)
 oauth.init_app(app)
 bcrypt.init_app(app)
 login_manager.init_app(app)
 csrf.init_app(app)
+mail.init_app(app)
 
+Session(app)
 CORS(app, resources = {
     r"/*": {
         'origins': ['http://localhost:5137'],
