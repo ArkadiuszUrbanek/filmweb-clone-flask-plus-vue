@@ -1,6 +1,6 @@
 class ForumDto():
   id = 0
-  name =''
+  name = ''
   description = ''
   tags = ''
   creation_date = None

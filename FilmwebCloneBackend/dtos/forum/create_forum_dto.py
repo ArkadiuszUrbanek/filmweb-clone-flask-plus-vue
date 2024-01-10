@@ -1,5 +1,5 @@
 class CreateForumDto():
-  name =''
+  name = ''
   description = ''
   tags = ''
   user_id = 0

@@ -20,8 +20,8 @@ class ForumRepository():
     dbForum = self.get(id)
     dbForum.name = forum.name
     dbForum.description = forum.description
-    dbForum.tag = forum.tag
-    dbForum.messages = forum.message
+    dbForum.tags = forum.tags
+    dbForum.messages = forum.messages
     dbForum.user_id = forum.user_id
     dbForum.movie_id = forum.movie_id
     dbForum.modification_date = datetime.datetime.utcnow()

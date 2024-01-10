@@ -1,4 +1,4 @@
-from blueprints import ForumMappers
+from blueprints import ForumMappers, MessageMappers
 from dtos import CreateForumDto, CreateMessageDto
 from repositories import ForumRepository, MessageRepository
 
@@ -7,6 +7,7 @@ class ForumService():
   forumRepository = ForumRepository()
   messageRepository = MessageRepository()
   forumMappers = ForumMappers()
+  messageMappers = MessageMappers()
 
   def findAll(self):
     dtoTab = []
@@ -22,12 +23,10 @@ class ForumService():
 
   def addMessage(self, forumId, messageDto: CreateMessageDto):
     forum = self.forumRepository.get(forumId)
-    message = self.messageRepository.create(messageDto)
-    message.forum_id = forum.id
+    message = self.messageRepository.create(forum.id, self.messageMappers.createMessageDtoToSqlAlchemyMapper(messageDto))
     forumMessages = forum.messages
     forumMessages.append(message)
-    self.messageRepository.update(message)
-    return self.forumRepository.update(forum)
+    return self.forumRepository.update(forum.id, forum)
 
   def create(self, forumDto: CreateForumDto):
     forumDb = self.forumMappers.createForumDtoToSqlAlchemyMapper(forumDto)
@@ -41,24 +40,3 @@ class ForumService():
     forumDb = self.forumRepository.get(id)
     self.forumRepository.delete(forumDb)
     return
-
-  def test(self):
-    forum = CreateForumDto()
-    forum.name = "TestForum"
-    forum.description = "Przykladowa wiaomosc raz dwa trz"
-    forum.movie_id = 1
-    forum.tags = "TestowyHash"
-    forum.user_id = 1
-    self.create(forum)
-    message = CreateMessageDto()
-    message.text = "Testowa wiadomosc test"
-    message.user_id = 2
-    self.addMessage(1,message)
-    answer = CreateMessageDto()
-    message.text = "Testowa odpowiedz 123"
-    message.user_id = 3
-    print(self.get(1).text)
-    answers = self.getAllAnswers(1)
-    for answer in answers:
-      print(answer.id)
-      print(answer.text)

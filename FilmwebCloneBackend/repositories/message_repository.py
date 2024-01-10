@@ -7,10 +7,10 @@ class MessageRepository():
     return Message.query.get(id)
 
   def getAllAnswers(self, id):
-    #return Message.query.get(id).messages.order_by(Message.messages.creation_date)
-    return Message.query.get(id).options(db.load_only('messages')).order_by(Message.messages.creation_date).all()
+    return Message.query.filter_by(main_message = id).order_by(Message.id).all()
 
-  def create(self, message):
+  def create(self, forumId, message):
+    message.forum_id = forumId
     message.creation_date = datetime.datetime.utcnow()
     message.modification_date = datetime.datetime.utcnow()
     db.session.add(message)
@@ -23,9 +23,7 @@ class MessageRepository():
     message.main_message = parentMessage.id
     message.creation_date = datetime.datetime.utcnow()
     message.modification_date = datetime.datetime.utcnow()
-    answers = parentMessage.messages
-    answers.append(message)
-    parentMessage.messages = answers
+    db.session.add(message)
     db.session.commit()
     return message
 

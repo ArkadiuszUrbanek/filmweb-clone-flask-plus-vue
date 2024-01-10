@@ -4,8 +4,6 @@ from models import db
 from blueprints import oauth, auth_blueprint, bcrypt, login_manager, csrf, errors_blueprint, interceptors_blueprint
 from dotenv import dotenv_values
 
-from services import MessageService
-
 config = dotenv_values('.env')
 
 app = Flask(__name__)
@@ -39,8 +37,6 @@ CORS(app, resources = {
 
 with app.app_context():
     db.create_all()
-    ms = MessageService()
-    ms.test()
 
 app.register_blueprint(auth_blueprint)
 app.register_blueprint(errors_blueprint)
