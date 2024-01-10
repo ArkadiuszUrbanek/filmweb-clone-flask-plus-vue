@@ -14,3 +14,11 @@ class Forum(db.Model):
   messages = db.relationship('Message', backref = 'forum', lazy = True, cascade = 'all, delete')
   user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = True)
   movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), nullable = False)
+
+  def __init__(self, name, description, tags, user_id, movie_id, **kwargs):
+    super(Forum, self).__init__(**kwargs)
+    self.name = name
+    self.description = description
+    self.tags = tags
+    self.user_id = user_id
+    self.movie_id = movie_id

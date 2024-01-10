@@ -1,6 +1,5 @@
 import datetime
-from models import db
-from models.message import Message
+from models import db, Message
 
 class MessageRepository():
 
@@ -18,16 +17,17 @@ class MessageRepository():
     db.session.commit()
     return message
 
-  def createAnswer(self, parentId, answer):
+  def createAnswer(self, parentId, message):
     parentMessage = self.get(parentId)
+    message.forum_id = parentMessage.forum_id
+    message.main_message = parentMessage.id
+    message.creation_date = datetime.datetime.utcnow()
+    message.modification_date = datetime.datetime.utcnow()
     answers = parentMessage.messages
-    answers.append(answer)
+    answers.append(message)
     parentMessage.messages = answers
-    answer.main_message = parentId
-    answer.creation_date = datetime.datetime.utcnow()
-    answer.modification_date = datetime.datetime.utcnow()
     db.session.commit()
-    return answer
+    return message
 
   def update(self, id, message):
     dbMessage = self.get(id)
