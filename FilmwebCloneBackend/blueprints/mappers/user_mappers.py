@@ -1,4 +1,4 @@
-from models.user import User
+from models import User
 from dtos import UserDto, CreateUserDto
 
 class UserMappers():
