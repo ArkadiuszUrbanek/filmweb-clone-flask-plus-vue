@@ -11,7 +11,7 @@ class User(db.Model, UserMixin):
   last_name = db.Column(db.String(40), nullable = False)
   email = db.Column(db.String(40), nullable = False)
   email_confirmed = db.Column(db.Boolean, nullable = True)
-  password_hash = db.Column(db.String(50), nullable = True)
+  password_hash = db.Column(db.String(60), nullable = True)
   account_type = db.Column(db.Enum(UserAccountType), nullable = False)
   role = db.Column(db.Enum(UserRole), nullable = False)
   creation_date = db.Column(db.DateTime, nullable = False, server_default = utcnow())
@@ -20,6 +20,7 @@ class User(db.Model, UserMixin):
   forums = db.relationship('Forum', backref = 'user', lazy = True)
   messages = db.relationship('Message', backref = 'user', lazy = True, cascade = 'all, delete')
   reviews = db.relationship('Review', backref = 'user', lazy = True)
+  salts = db.relationship('Salt', backref = 'user', lazy = True, cascade = 'all, delete')
 
   def __init__(self, first_name, last_name, email, password_hash, account_type, role, **kwargs):
     super(User, self).__init__(**kwargs)

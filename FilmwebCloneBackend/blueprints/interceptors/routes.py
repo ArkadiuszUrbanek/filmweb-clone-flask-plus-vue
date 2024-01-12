@@ -39,8 +39,8 @@ def check_csrf():
                       secret_key = session.get('csrf_token_secret_key', None),
                       token_key = current_app.config.get('WTF_CSRF_FIELD_NAME', 'csrf_token'))
         
-    except ValidationError as e:
-        raise BadRequest(description = e.args[0])
+    except ValidationError as exception:
+        raise BadRequest(description = exception.args[0])
 
     g.csrf_valid = True
 
