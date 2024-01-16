@@ -4,5 +4,7 @@ from .message.message_dto import MessageDto
 from .message.create_message_dto import CreateMessageDto
 from .forum.forum_dto import ForumDto
 from .forum.create_forum_dto import CreateForumDto
-from .movie.movie_dto import MovieDto
 from .movie.create_movie_dto import CreateMovieDto
+from .movie.movie_dto import MovieDto
+from .review.create_review_dto import CreateReviewDto
+from .review.review_dto import ReviewDto
