@@ -14,13 +14,13 @@ class MovieService():
   ReviewMappers = ReviewMappers()
 
 
-  def findAll(self):
-    dtoTab = []
-    movieTab = self.movieRepository.findAll()
-    convert = lambda unit: self.forumMappers.forumSqlAlchemyToDtoMapper(unit)
-    for record in movieTab:
-      dtoTab.append(convert(record))
-    return dtoTab
+def findAll(self):
+  dtoTab = []
+  movieTab = self.movieRepository.findAll()
+  convert = lambda unit: self.forumMappers.forumSqlAlchemyToDtoMapper(unit)
+  for record in movieTab:
+    dtoTab.append(convert(record))
+  return dtoTab
 
 def get(self, id):
   movieDb = self.movieRepository.get(id)

@@ -8,3 +8,7 @@ class Genre(db.Model):
   name = db.Column(db.String(100), nullable = False)
   creation_date = db.Column(db.DateTime, nullable = False, server_default = utcnow())
   modification_date = db.Column(db.DateTime, nullable = False, server_default = utcnow())
+
+  def __init__(self, name, **kwargs):
+    super(Genre, self).__init__(**kwargs)
+    self.name = name
