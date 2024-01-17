@@ -13,7 +13,7 @@ class Forum(db.Model):
 
   messages = db.relationship('Message', backref = 'forum', lazy = True, cascade = 'all, delete')
   user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = True)
-  movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), nullable = False)
+  movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), nullable = True)
 
   def __init__(self, name, description, tags, user_id, movie_id, **kwargs):
     super(Forum, self).__init__(**kwargs)

@@ -16,7 +16,14 @@ class Movie(db.Model):
   modification_date = db.Column(db.DateTime, nullable = False, server_default = utcnow())
 
   reviews = db.relationship('Review', backref = 'movie',  cascade = 'all, delete')
-  forums = db.relationship('Forum', backref = 'movie', cascade = 'all, delete')
+  forums = db.relationship('Forum', backref = 'movie')
   directors = db.relationship('Director', secondary = movie_director, lazy='subquery', backref = db.backref('movies', lazy = 'subquery'))
   actors = db.relationship('Actor', secondary = movie_actor, lazy='subquery', backref = db.backref('movies', lazy = 'subquery'))
   genres = db.relationship('Genre', secondary = movie_genre, lazy='subquery', backref = db.backref('movies', lazy = 'subquery'))
+
+  def __init__(self, title, premiere_date, length_time, description, **kwargs):
+    super(Movie, self).__init__(**kwargs)
+    self.title = title
+    self.premiere_date = premiere_date
+    self.length_time = length_time
+    self.description = description

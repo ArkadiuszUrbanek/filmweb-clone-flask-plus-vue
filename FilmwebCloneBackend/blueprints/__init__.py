@@ -8,3 +8,5 @@ from .interceptors import interceptors_blueprint
 from .mappers.user_mappers import UserMappers
 from .mappers.message_mappers import MessageMappers
 from .mappers.forum_mappers import ForumMappers
+from .mappers.movie_mappers import MovieMappers
+from .mappers.review_mappers import ReviewMappers

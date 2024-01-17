@@ -12,3 +12,10 @@ class Review(db.Model):
 
   user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = True)
   movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), nullable = False)
+
+  def __init__(self, mark, description, user_id, movie_id, **kwargs):
+    super(Review, self).__init__(**kwargs)
+    self.mark = mark
+    self.description = description
+    self.user_id = user_id
+    self.movie_id = movie_id
