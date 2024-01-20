@@ -19,7 +19,7 @@ class GenreRepository():
  def update(self, id, genre):
   dbGenre = self.get(id)
   dbGenre.name = genre.name
-  dbGenre.modification_date = datetime.datetiem.utcnow()
+  dbGenre.modification_date = datetime.datetime.utcnow()
   db.session.commit()
   return dbGenre
 

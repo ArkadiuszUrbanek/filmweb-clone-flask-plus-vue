@@ -1,0 +1,2 @@
+class CreateGenreDto():
+  name = ''
