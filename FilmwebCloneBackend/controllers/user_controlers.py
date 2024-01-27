@@ -28,4 +28,5 @@ def updateUser(id):
 
 @user_blueprint.route('/<int:id>', methods = ['DELETE'])
 def deleteUser(id):
-    return jsonify(userService.delete(id)), HTTP_OK_STATUS
+    userService.delete(id)
+    return '', HTTP_OK_STATUS
