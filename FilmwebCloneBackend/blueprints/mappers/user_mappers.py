@@ -1,7 +1,18 @@
+from enums import UserAccountType, UserRole
 from models import User
 from dtos import UserDto, CreateUserDto
 
 class UserMappers():
+
+  def requestToCreateUserDtoMapper(self, request) -> CreateUserDto:
+    createUserDto = CreateUserDto()
+    createUserDto.first_name = request.form['first_name'] if request.form['first_name'] != None else ''
+    createUserDto.last_name = request.form['last_name'] if request.form['last_name'] != None else ''
+    createUserDto.email = request.form['email'] if request.form['email'] != None else ''
+    createUserDto.password_hash = request.form['password_hash'] if  request.form['password_hash'] != None else ''
+    createUserDto.account_type = request.form['account_type'] if request.form['account_type'] != None else UserAccountType.APP
+    createUserDto.role = request.form['role'] if request.form['role'] != None else UserRole.GUEST
+    return createUserDto
 
   def userSqlAlchemyToDtoMapper(self, userDb: User) -> UserDto:
     userDto = UserDto()

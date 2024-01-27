@@ -2,6 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from models import db
 from blueprints import oauth, auth_blueprint, bcrypt, login_manager, csrf, errors_blueprint, interceptors_blueprint
+from controllers import user_blueprint
 from dotenv import dotenv_values
 
 config = dotenv_values('.env')
@@ -27,6 +28,7 @@ bcrypt.init_app(app)
 login_manager.init_app(app)
 csrf.init_app(app)
 
+
 CORS(app, resources = {
     r"/*": {
         'origins': ['http://localhost:5137'],
@@ -41,6 +43,7 @@ with app.app_context():
 app.register_blueprint(auth_blueprint)
 app.register_blueprint(errors_blueprint)
 app.register_blueprint(interceptors_blueprint)
+app.register_blueprint(user_blueprint)
 
 if __name__ == '__main__':
     app.run(host = '127.0.0.1', port = 5000, debug = True, ssl_context = 'adhoc')
