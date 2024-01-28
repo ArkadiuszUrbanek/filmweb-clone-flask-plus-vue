@@ -15,6 +15,7 @@ class MovieMappers():
     createMovieDto.directors = request.json.get('directors') if request.json.get('directors') != None else []
     createMovieDto.actors = request.json.get('actors') if request.json.get('actors') != None else []
     createMovieDto.genres = request.json.get('genres') if request.json.get('genres') != None else []
+    return createMovieDto
 
   def movieSqlAlchemyToDtoMapper(self, movieDb: Movie) -> MovieDto:
     movieDto = MovieDto()

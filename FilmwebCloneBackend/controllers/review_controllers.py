@@ -14,7 +14,7 @@ def getReview(id):
 
 @review_blueprint.route('/<int:id>', methods=['PUT'])
 def updateReview(id):
-  reviewDto = reviewMappers.reviewSqlAlchemyToDtoMapper(request)
+  reviewDto = reviewMappers.requestToCreateReviewDtoMapper(request)
   return jsonify(reviewService.update(id, reviewDto)), HTTP_OK_STATUS
 
 @review_blueprint.route('/<int:id>', methods=['DELETE'])
