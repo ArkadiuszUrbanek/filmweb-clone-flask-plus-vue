@@ -1,7 +1,14 @@
+from flask import Request
 from dtos import MessageDto, CreateMessageDto
 from models import Message
 
 class MessageMappers():
+
+  def requestToCreateMessageDtoMapper(self, request: Request) -> CreateMessageDto:
+    createMessageDto = CreateMessageDto()
+    createMessageDto.text = request.json.get('text') if request.json.get('text') != None else ''
+    createMessageDto.user_id = request.json.get('user_id') if request.json.get('user_id') != None else 0
+    return createMessageDto
 
   def messageSqlAlchemyToDtoMapper(self, messageDb: Message) -> MessageDto:
     messageDto = MessageDto()

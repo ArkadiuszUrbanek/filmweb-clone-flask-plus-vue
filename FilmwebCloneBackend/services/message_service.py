@@ -10,27 +10,27 @@ class MessageService():
 
   def get(self, id):
     dbMessage = self.messageRepository.get(id)
-    return self.messageMappers.messageSqlAlchemyToDtoMapper(dbMessage)
+    return self.messageMappers.messageSqlAlchemyToDtoMapper(dbMessage).to_dict()
 
   def getAllAnswers(self, id):
     answerMessages =  []
     dbMessages = self.messageRepository.getAllAnswers(id)
-    convert = lambda unit : self.messageMappers.messageSqlAlchemyToDtoMapper(unit)
+    convert = lambda unit : self.messageMappers.messageSqlAlchemyToDtoMapper(unit).to_dict()
     for record in dbMessages:
       answerMessages.append(convert(record))
     return answerMessages
 
   def create(self, forumId, messageDto: CreateMessageDto):
     messageDb = self.messageMappers.createMessageDtoToSqlAlchemyMapper(messageDto)
-    return self.messageRepository.create(forumId, messageDb)
+    return self.messageMappers.messageSqlAlchemyToDtoMapper(self.messageRepository.create(forumId, messageDb)).to_dict()
 
   def createAnswer(self, parentId, messageDto: CreateMessageDto):
     messageDb = self.messageMappers.createMessageDtoToSqlAlchemyMapper(messageDto)
-    return self.messageRepository.createAnswer(parentId, messageDb)
+    return self.messageMappers.messageSqlAlchemyToDtoMapper(self.messageRepository.createAnswer(parentId, messageDb)).to_dict()
 
   def update(self, id, messageDto: CreateMessageDto):
     messageDb = self.messageMappers.createMessageDtoToSqlAlchemyMapper(messageDto)
-    return self.messageRepository.update(id, messageDb)
+    return self.messageMappers.messageSqlAlchemyToDtoMapper(self.messageRepository.update(id, messageDb)).to_dict()
 
   def delete(self, id):
     messageDb = self.messageRepository.get(id)

@@ -31,19 +31,3 @@ class GenreService():
     genreDb = self.genreRepository.get(id)
     self.genreRepository.delete(genreDb)
     return
-
-  def test(self):
-    genreDto = CreateGenreDto()
-    genreDto.name = "Horrrojek"
-    self.create(genreDto)
-    genre2 = self.get(2)
-    print(genre2.id)
-    print(genre2.name)
-    genreDto.name = "Dramat"
-    self.update(4,genreDto)
-    all = self.findAll()
-    for a in all:
-      print(a.id)
-      print(a.name)
-    self.delete(13)
-    return

@@ -12,12 +12,12 @@ review_blueprint = Blueprint('review_blueprint', __name__, url_prefix='/review')
 def getReview(id):
   return jsonify(reviewService.get(id)), HTTP_OK_STATUS
 
-@review_blueprint.route('/<int:id>', methods=['PUT'])
+@review_blueprint.route('/<int:id>', methods = ['PUT'])
 def updateReview(id):
   reviewDto = reviewMappers.requestToCreateReviewDtoMapper(request)
   return jsonify(reviewService.update(id, reviewDto)), HTTP_OK_STATUS
 
-@review_blueprint.route('/<int:id>', methods=['DELETE'])
+@review_blueprint.route('/<int:id>', methods = ['DELETE'])
 def deleteReview(id):
   reviewService.delete(id)
   return '', HTTP_OK_STATUS
