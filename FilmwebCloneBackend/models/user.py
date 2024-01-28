@@ -15,7 +15,7 @@ class User(db.Model, UserMixin):
   role = db.Column(db.Enum(UserRole), nullable = False)
   creation_date = db.Column(db.DateTime, nullable = False, server_default = utcnow())
   modification_date = db.Column(db.DateTime, nullable = False, server_default = utcnow())
-  csrf_token_secret_key = None   
+  csrf_token_secret_key = None
 
   forums = db.relationship('Forum', backref = 'user', lazy = True)
   messages = db.relationship('Message', backref = 'user', lazy = True, cascade = 'all, delete')

@@ -23,21 +23,21 @@ def addReview(movieId):
   return jsonify(movieService.addReview(movieId, reviewDto)), HTTP_CREATED_STATUS
 
 @movie_blueprint.route('/', methods = ['POST'])
-def createFullMovie():
-  movieDto = movieMappers.requestToCreateMovieDtoMapper(request)
-  return jsonify(movieService.createFullMovie(movieDto)), HTTP_CREATED_STATUS
-
-@movie_blueprint.route('/plain', methods = ['POST'])
 def createPlainMovie():
   movieDto = movieMappers.requestToCreateMovieDtoMapper(request)
   return jsonify(movieService.createPlainMovie(movieDto)), HTTP_CREATED_STATUS
+
+@movie_blueprint.route('/full', methods = ['POST'])
+def createFullMovie():
+  movieDto = movieMappers.requestToCreateMovieDtoMapper(request)
+  return jsonify(movieService.createFullMovie(movieDto)), HTTP_CREATED_STATUS
 
 @movie_blueprint.route('/<int:id>', methods = ['PUT'])
 def updateMovie(id):
   movieDto = movieMappers.requestToCreateMovieDtoMapper(request)
   return jsonify(movieService.update(id, movieDto)), HTTP_OK_STATUS
 
-@movie_blueprint.route('/<int:id>', methods = ['DELTE'])
+@movie_blueprint.route('/<int:id>', methods = ['DELETE'])
 def deleteMovie(id):
   movieService.delete(id)
   return '', HTTP_OK_STATUS

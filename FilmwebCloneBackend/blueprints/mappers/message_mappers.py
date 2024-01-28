@@ -10,9 +10,18 @@ class MessageMappers():
     messageDto.forum_id = messageDb.forum_id
     messageDto.user_id = messageDb.user_id
     messageDto.main_message_id = messageDb.main_message
-    messageDto.messages = messageDb.messages
     messageDto.creation_date = messageDb.creation_date
     messageDto.modification_date = messageDb.modification_date
+    messageDto.messages = None
+    if messageDb.messages != None:
+        messageDto.messages = MessageDto()
+        messageDto.messages.id = messageDb.messages.id
+        messageDto.messages.text = messageDb.messages.text
+        messageDto.messages.forum_id = messageDb.messages.forum_id
+        messageDto.messages.user_id = messageDb.messages.user_id
+        messageDto.messages.main_message_id = messageDb.messages.main_message
+        messageDto.messages.creation_date = messageDb.messages.creation_date
+        messageDto.messages.modification_date = messageDb.messages.modification_date
     return messageDto
 
   def createMessageDtoToSqlAlchemyMapper(self, createMessageDto: CreateMessageDto) -> Message:

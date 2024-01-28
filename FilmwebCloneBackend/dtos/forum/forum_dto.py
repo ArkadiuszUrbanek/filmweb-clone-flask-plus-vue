@@ -17,7 +17,7 @@ class ForumDto():
       'tags' : self.tags,
       'creation_date' : str(self.creation_date),
       'modficiation_date' : str(self.modification_date),
-      'messages' : [{message.to_dict()} for message in self.messages],
+      'messages' : [message.to_dict() for message in self.messages],
       'user_id' : str(self.user_id),
       'movie_id' : str(self.movie_id),
     }

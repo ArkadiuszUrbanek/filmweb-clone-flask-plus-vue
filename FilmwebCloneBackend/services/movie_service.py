@@ -29,13 +29,13 @@ class MovieService():
     movieDb = self.movieRepository.get(movieId)
     reviewDb = self.reviewRepository.create(movieId, self.reviewMappers.createReviewDtoToSqlAlchemyMapper(reviewDto))
     movieDb.reviews.append(reviewDb)
-    return self.movieMappers(self.movieRepository.update(movieId, movieDb)).to_dict()
+    return self.movieMappers.movieSqlAlchemyToDtoMapper(self.movieRepository.update(movieId, movieDb)).to_dict()
 
   def connectForum(self, movieId, forumId):
     movieDb = self.movieRepository.get(movieId)
     forumDb = self.forumRepository.get(forumId)
     movieDb.forums.append(forumDb)
-    return self.movieMappers(self.movieRepository.update(movieId, movieDb)).to_dict()
+    return self.movieMappers.movieSqlAlchemyToDtoMapper(self.movieRepository.update(movieId, movieDb)).to_dict()
 
   def connectActors(self, movieId, actorIdTab):
     movieDb = self.movieRepository.get(movieId)
@@ -44,7 +44,7 @@ class MovieService():
       actorDb = self.actorRepository.get(id)
       movieActors.append(actorDb)
     movieDb.actors = movieActors
-    return self.movieMappers(self.movieRepository.update(movieId, movieDb)).to_dict()
+    return self.movieMappers.movieSqlAlchemyToDtoMapper(self.movieRepository.update(movieId, movieDb)).to_dict()
 
   def connectDirectors(self, movieId, directorIdTab):
     movieDb = self.movieRepository.get(movieId)
@@ -53,7 +53,7 @@ class MovieService():
       directorDb = self.directorRepository.get(id)
       movieDirectors.append(directorDb)
     movieDb.directors = movieDirectors
-    return self.movieMappers(self.movieRepository.update(movieId, movieDb)).to_dict()
+    return self.movieMappers.movieSqlAlchemyToDtoMapper(self.movieRepository.update(movieId, movieDb)).to_dict()
 
   def connectGenres(self, movieId, genreIdTab):
     movieDb = self.movieRepository.get(movieId)
@@ -62,11 +62,11 @@ class MovieService():
       genreDb = self.genreRepository.get(id)
       movieGenres.append(genreDb)
     movieDb.gernes = movieGenres
-    return self.movieMappers(self.movieRepository.update(movieId, movieDb)).to_dict()
+    return self.movieMappers.movieSqlAlchemyToDtoMapper(self.movieRepository.update(movieId, movieDb)).to_dict()
 
   def createPlainMovie(self, movieDto: CreateMovieDto):
     movieDb = self.movieMappers.createMovieDtoToSqlAlchemyMapper(movieDto)
-    return self.movieMappers(self.movieRepository.create(movieDb)).to_dict()
+    return self.movieMappers.movieSqlAlchemyToDtoMapper(self.movieRepository.create(movieDb)).to_dict()
 
   def createFullMovie(self, movieDto: CreateMovieDto):
     movieDb = self.movieMappers.createMovieDtoToSqlAlchemyMapper(movieDto)
@@ -75,11 +75,11 @@ class MovieService():
     movieDb.directors = movieDto.directors
     movieDb.actors = movieDto.actors
     movieDb.genres = movieDto.genres
-    return self.movieMappers(self.movieRepository.create(movieDb)).to_dict()
+    return self.movieMappers.movieSqlAlchemyToDtoMapper(self.movieRepository.create(movieDb)).to_dict()
 
   def update(self, id, movieDto: CreateMovieDto):
     movieDb = self.movieMappers.createMovieDtoToSqlAlchemyMapper(movieDto)
-    return self.movieMappers(self.movieRepository.update(id, movieDb)).to_dict()
+    return self.movieMappers.movieSqlAlchemyToDtoMapper(self.movieRepository.update(id, movieDb)).to_dict()
 
   def delete(self, id):
     movieDb = self.movieRepository.get(id)
