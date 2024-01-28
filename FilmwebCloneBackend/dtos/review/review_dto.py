@@ -13,5 +13,5 @@ class ReviewDto(CreateReviewDto):
       'user_id' : str(self.user_id),
       'movie_id' : str(self.movie_id),
       'creation_date' : str(self.creation_date),
-      'modification_date' : str(self.modification_date)
+      'modification_date' : str(self.modification_date),
     }
