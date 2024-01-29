@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from models import db
 from blueprints import oauth, auth_blueprint, bcrypt, login_manager, csrf, errors_blueprint, interceptors_blueprint
-from controllers import user_blueprint, review_blueprint, movie_blueprint, message_blueprint, genre_blueprint
+from controllers import user_blueprint, review_blueprint, movie_blueprint, message_blueprint, genre_blueprint, forum_blueprint, director_blueprint, actor_blueprint
 from dotenv import dotenv_values
 
 config = dotenv_values('.env')
@@ -47,6 +47,9 @@ app.register_blueprint(review_blueprint)
 app.register_blueprint(movie_blueprint)
 app.register_blueprint(message_blueprint)
 app.register_blueprint(genre_blueprint)
+app.register_blueprint(forum_blueprint)
+app.register_blueprint(director_blueprint)
+app.register_blueprint(actor_blueprint)
 
 if __name__ == '__main__':
     app.run(host = '127.0.0.1', port = 5000, debug = True, ssl_context = 'adhoc')
