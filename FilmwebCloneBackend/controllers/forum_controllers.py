@@ -17,10 +17,10 @@ def getAllForums():
 def getForum(id):
   return jsonify(forumService.get(id)), HTTP_OK_STATUS
 
-@forum_blueprint.route('/<int:forumId>/message', methods = ['POST'])
-def addMessage(forumId):
+@forum_blueprint.route('/message', methods = ['POST'])
+def addMessage():
   messageDto = messageMappers.requestToCreateMessageDtoMapper(request)
-  return jsonify(forumService.addMessage(forumId, messageDto)), HTTP_CREATED_STATUS
+  return jsonify(forumService.addMessage(messageDto)), HTTP_CREATED_STATUS
 
 @forum_blueprint.route('/', methods = ['POST'])
 def createForum():
