@@ -1,9 +1,19 @@
+from flask import Request
 from dtos import ForumDto, CreateForumDto
 from models import Forum
 
 from .message_mappers import MessageMappers
 
 class ForumMappers():
+
+  def requestToCreateForumDtoMapper(self, request: Request) -> CreateForumDto:
+     createForumDto = CreateForumDto()
+     createForumDto.name = request.json.get('name') if request.json.get('name') != None else ''
+     createForumDto.description = request.json.get('description') if request.json.get('description') != None else ''
+     createForumDto.tags = request.json.get('tags') if request.json.get('tags') != None else ''
+     createForumDto.user_id = request.json.get('user_id') if request.json.get('user_id') != None else 0
+     createForumDto.movie_id = request.json.get('movie_id') if request.json.get('movie_id') != None else 0
+     return createForumDto
 
   def forumSqlAlchemyToDtoMapper(self, forumDb: Forum) -> ForumDto:
     messageMappers = MessageMappers()
