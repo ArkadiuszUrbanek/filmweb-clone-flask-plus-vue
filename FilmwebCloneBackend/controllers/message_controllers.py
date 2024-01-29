@@ -21,7 +21,7 @@ def createMessage():
   messageDto = messageMappers.requestToCreateMessageDtoMapper(request)
   return jsonify(messageService.create(messageDto)), HTTP_CREATED_STATUS
 
-@message_blueprint.route('/<parentId:id>/answer', methods = ['POST'])
+@message_blueprint.route('/<int:parentId>/answer', methods = ['POST'])
 def createAnswer(parentId):
   answerDto = messageMappers.requestToCreateMessageDtoMapper(request)
   return jsonify(messageService.createAnswer(parentId, answerDto)), HTTP_CREATED_STATUS

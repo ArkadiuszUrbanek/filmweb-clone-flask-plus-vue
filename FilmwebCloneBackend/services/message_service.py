@@ -20,9 +20,9 @@ class MessageService():
       answerMessages.append(convert(record))
     return answerMessages
 
-  def create(self, forumId, messageDto: CreateMessageDto):
+  def create(self, messageDto: CreateMessageDto):
     messageDb = self.messageMappers.createMessageDtoToSqlAlchemyMapper(messageDto)
-    return self.messageMappers.messageSqlAlchemyToDtoMapper(self.messageRepository.create(forumId, messageDb)).to_dict()
+    return self.messageMappers.messageSqlAlchemyToDtoMapper(self.messageRepository.create(messageDto.forum_id, messageDb)).to_dict()
 
   def createAnswer(self, parentId, messageDto: CreateMessageDto):
     messageDb = self.messageMappers.createMessageDtoToSqlAlchemyMapper(messageDto)

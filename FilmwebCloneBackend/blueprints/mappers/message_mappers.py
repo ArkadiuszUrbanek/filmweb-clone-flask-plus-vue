@@ -8,6 +8,7 @@ class MessageMappers():
     createMessageDto = CreateMessageDto()
     createMessageDto.text = request.json.get('text') if request.json.get('text') != None else ''
     createMessageDto.user_id = request.json.get('user_id') if request.json.get('user_id') != None else 0
+    createMessageDto.forum_id = request.json.get('forum_id') if request.json.get('forum_id') != None else 0
     return createMessageDto
 
   def messageSqlAlchemyToDtoMapper(self, messageDb: Message) -> MessageDto:
