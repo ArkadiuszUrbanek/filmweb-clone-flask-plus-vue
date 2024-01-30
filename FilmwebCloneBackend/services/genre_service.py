@@ -10,40 +10,24 @@ class GenreService():
   def findAll(self):
     dtoTab = []
     genreTab = self.genreRepository.findAll()
-    convert = lambda unit: self.genreMappers.genreSqlAlchemyToDtoMapper(unit)
+    convert = lambda unit: self.genreMappers.genreSqlAlchemyToDtoMapper(unit).to_dict()
     for record in genreTab:
       dtoTab.append(convert(record))
     return dtoTab
 
   def get(self, id):
     genreDb = self.genreRepository.get(id)
-    return self.genreMappers.genreSqlAlchemyToDtoMapper(genreDb)
+    return self.genreMappers.genreSqlAlchemyToDtoMapper(genreDb).to_dict()
 
   def create(self, genreDto: CreateGenreDto):
     genreDb = self.genreMappers.createGenreDtoToSqlAlchemyMapper(genreDto)
-    return self.genreRepository.create(genreDb)
+    return self.genreMappers.genreSqlAlchemyToDtoMapper(self.genreRepository.create(genreDb)).to_dict()
 
   def update(self, id, genreDto: CreateGenreDto):
     genreDb = self.genreMappers.createGenreDtoToSqlAlchemyMapper(genreDto)
-    return self.genreRepository.update(id, genreDb)
+    return self.genreMappers.genreSqlAlchemyToDtoMapper(self.genreRepository.update(id, genreDb)).to_dict()
 
   def delete(self, id):
     genreDb = self.genreRepository.get(id)
     self.genreRepository.delete(genreDb)
-    return
-
-  def test(self):
-    genreDto = CreateGenreDto()
-    genreDto.name = "Horrrojek"
-    self.create(genreDto)
-    genre2 = self.get(2)
-    print(genre2.id)
-    print(genre2.name)
-    genreDto.name = "Dramat"
-    self.update(4,genreDto)
-    all = self.findAll()
-    for a in all:
-      print(a.id)
-      print(a.name)
-    self.delete(13)
     return

@@ -12,29 +12,30 @@ class ForumService():
   def findAll(self):
     dtoTab = []
     forumTab = self.forumRepository.findAll()
-    convert = lambda unit: self.forumMappers.forumSqlAlchemyToDtoMapper(unit)
+    convert = lambda unit: self.forumMappers.forumSqlAlchemyToDtoMapper(unit).to_dict()
     for record in forumTab:
       dtoTab.append(convert(record))
     return dtoTab
 
   def get(self, id):
     forumDb = self.forumRepository.get(id)
-    return self.forumMappers.forumSqlAlchemyToDtoMapper(forumDb)
+    return self.forumMappers.forumSqlAlchemyToDtoMapper(forumDb).to_dict()
 
-  def addMessage(self, forumId, messageDto: CreateMessageDto):
-    forum = self.forumRepository.get(forumId)
+  def addMessage(self, messageDto: CreateMessageDto):
+    forum = self.forumRepository.get(messageDto.forum_id)
     message = self.messageRepository.create(forum.id, self.messageMappers.createMessageDtoToSqlAlchemyMapper(messageDto))
     forumMessages = forum.messages
     forumMessages.append(message)
-    return self.forumRepository.update(forum.id, forum)
+    forum.messages = forumMessages
+    return self.forumMappers.forumSqlAlchemyToDtoMapper(self.forumRepository.update(forum.id, forum)).to_dict()
 
   def create(self, forumDto: CreateForumDto):
     forumDb = self.forumMappers.createForumDtoToSqlAlchemyMapper(forumDto)
-    return self.forumRepository.create(forumDb)
+    return self.forumMappers.forumSqlAlchemyToDtoMapper(self.forumRepository.create(forumDb)).to_dict()
 
   def update(self, id, forumDto: CreateForumDto):
     forumDb = self.forumMappers.createForumDtoToSqlAlchemyMapper(forumDto)
-    return self.forumRepository.update(id, forumDb)
+    return self.forumMappers.forumSqlAlchemyToDtoMapper(self.forumRepository.update(id, forumDb)).to_dict()
 
   def delete(self, id):
     forumDb = self.forumRepository.get(id)

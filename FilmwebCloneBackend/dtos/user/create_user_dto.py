@@ -1,7 +1,9 @@
 from enums import UserAccountType, UserRole
-from .user_dto import UserDto
 
-class CreateUserDto(UserDto):
+class CreateUserDto():
+  first_name = ''
+  last_name = ''
+  email = ''
   password_hash = ''
   account_type = UserAccountType.APP
   role = UserRole.GUEST

@@ -9,11 +9,11 @@ class ReviewService():
 
   def get(self, id):
     reviewDb = self.reviewRepository.get(id)
-    return self.reviewMappers.reviewSqlAlchemyToDtoMapper(reviewDb)
+    return self.reviewMappers.reviewSqlAlchemyToDtoMapper(reviewDb).to_dict()
 
   def update(self, id, reviewDto: CreateReviewDto):
     reviewDb = self.reviewMappers.createReviewDtoToSqlAlchemyMapper(reviewDto)
-    return self.reviewRepository.update(id, reviewDb)
+    return self.reviewMappers.reviewSqlAlchemyToDtoMapper(self.reviewRepository.update(id, reviewDb)).to_dict()
 
   def delete(self, id):
     reviewDb = self.reviewRepository.get(id)

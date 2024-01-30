@@ -10,22 +10,22 @@ class DirectorService():
   def findAll(self):
     dtoTab = []
     directorTab = self.directorRepository.findAll()
-    convert = lambda unit: self.directorMappers.directorSqlAlchemyToDtoMapper(unit)
+    convert = lambda unit: self.directorMappers.directorSqlAlchemyToDtoMapper(unit).to_dict()
     for record in directorTab:
       dtoTab.append(convert(record))
     return dtoTab
 
   def get(self, id):
     directorDb = self.directorRepository.get(id)
-    return self.directorMappers.directorSqlAlchemyToDtoMapper(directorDb)
+    return self.directorMappers.directorSqlAlchemyToDtoMapper(directorDb).to_dict()
 
   def create(self, directorDto: CreateDirectorDto):
     directorDb = self.directorMappers.createDirectorDtoToSqlAlchemyMapper(directorDto)
-    return self.directorRepository.create(directorDb)
+    return self.directorMappers.directorSqlAlchemyToDtoMapper(self.directorRepository.create(directorDb)).to_dict()
 
   def update(self, id, directorDto: CreateDirectorDto):
     directorDb = self.directorMappers.createDirectorDtoToSqlAlchemyMapper(directorDto)
-    return self.directorRepository.update(id, directorDb)
+    return self.directorMappers.directorSqlAlchemyToDtoMapper(self.directorRepository.update(id, directorDb)).to_dict()
 
   def delete(self, id):
     directorDb = self.directorRepository.get(id)

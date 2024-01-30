@@ -1,7 +1,16 @@
+from flask import Request
 from dtos import ReviewDto, CreateReviewDto
 from models import Review
 
 class ReviewMappers():
+
+  def requestToCreateReviewDtoMapper(self, request: Request) -> CreateReviewDto:
+    createReviewDto = CreateReviewDto()
+    createReviewDto.mark = request.json.get('mark') if request.json.get('mark') != None else 0
+    createReviewDto.description = request.json.get('description') if request.json.get('description') != None else ''
+    createReviewDto.user_id = request.json.get('user_id') if request.json.get('user_id') != None else 0
+    createReviewDto.movie_id = request.json.get('movie_id') if request.json.get('movie_id') != None else 0
+    return createReviewDto
 
   def reviewSqlAlchemyToDtoMapper(self, reviewDb: Review) -> ReviewDto:
     reviewDto = ReviewDto()
