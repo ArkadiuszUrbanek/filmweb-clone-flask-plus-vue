@@ -21,6 +21,7 @@ class ActorRepository():
     dbActor.first_name = actor.first_name
     dbActor.last_name = actor.last_name
     dbActor.nationality = actor.nationality
+    dbActor.file_path = actor.file_path
     dbActor.description = actor.description
     dbActor.modification_date = datetime.datetime.utcnow()
     db.session.commit()

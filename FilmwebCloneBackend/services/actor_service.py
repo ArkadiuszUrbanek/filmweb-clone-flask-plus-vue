@@ -19,6 +19,10 @@ class ActorService():
     actorDb = self.actorRepository.get(id)
     return self.actorMappers.actorSqlAlchemyToDtoMapper(actorDb).to_dict()
 
+  def findById(self, id):
+    actorDb = self.actorRepository.get(id)
+    return actorDb
+
   def create(self, actorDto: CreateActorDto):
     actorDb = self.actorMappers.createActorDtoToSqlAlchemyMapper(actorDto)
     return self.actorMappers.actorSqlAlchemyToDtoMapper(self.actorRepository.create(actorDb)).to_dict()

@@ -26,12 +26,9 @@ class MovieMappers():
     createMovieDto.actors = jsonForm.get('actors') if jsonForm.get('actors') != None else []
     createMovieDto.genres = jsonForm.get('genres') if jsonForm.get('genres') != None else []
     if 'file' in request.files:
-        print('there is file')
         file = request.files['file']
         if file and file.filename != '' and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            print(filename)
-            print(MOVIE_FOLDER_PATH)
             file.save(os.path.join(MOVIE_FOLDER_PATH, filename))
             createMovieDto.file_path = filename
     return createMovieDto
