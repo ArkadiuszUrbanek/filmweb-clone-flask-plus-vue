@@ -21,6 +21,7 @@ class DirectorRepository():
     dbDirector.first_name = director.first_name
     dbDirector.last_name = director.last_name
     dbDirector.nationality = director.nationality
+    dbDirector.file_path = director.file_path
     dbDirector.description = director.description
     dbDirector.modification_date = datetime.datetime.utcnow()
     db.session.commit()

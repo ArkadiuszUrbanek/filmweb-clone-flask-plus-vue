@@ -21,6 +21,7 @@ app.config['WTF_CSRF_ENABLED'] = True
 app.config['WTF_CSRF_CHECK_DEFAULT'] = False
 app.config['WTF_CSRF_SSL_STRICT'] = False
 app.config['WTF_CSRF_METHODS'] = {'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'}
+app.config['UPLOAD_FOLDER'] = config['UPLOAD_FOLDER_DIRECTORY']
 
 db.init_app(app)
 oauth.init_app(app)
