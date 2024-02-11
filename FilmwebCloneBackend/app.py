@@ -14,7 +14,7 @@ app.config['SESSION_COOKIE_DOMAIN'] = '127.0.0.1'
 app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = None
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{config["MYSQL_USERNAME"]}:{config["MYSQL_PASSWORD"]}@localhost/{config["MYSQL_DATABASE_NAME"]}'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{config["MYSQL_USERNAME"]}:{config["MYSQL_PASSWORD"]}@{config["MYSQL_HOST_ADDRESS"]}/{config["MYSQL_DATABASE_NAME"]}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['WTF_CSRF_ENABLED'] = True
@@ -54,3 +54,5 @@ app.register_blueprint(actor_blueprint)
 
 if __name__ == '__main__':
     app.run(host = '127.0.0.1', port = 5000, debug = True, ssl_context = 'adhoc')
+if __name__ == '__dev__':
+    app.run(host = '0.0.0.0', port = 5000, debug = True, ssl_context = 'adhoc')

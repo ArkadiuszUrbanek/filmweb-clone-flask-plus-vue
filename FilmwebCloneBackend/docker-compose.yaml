@@ -1,0 +1,34 @@
+version: '3'
+services:
+    filmweb-app:
+        container_name: filmweb-app
+        build: .
+        ports:
+            - '5000:5000'
+        environment:
+            MYSQL_HOST_ADDRESS: mysqlFilmweb
+            MYSQL_USERNAME: ${MYSQL_USERNAME}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_DATABASE_NAME: ${MYSQL_DATABASE_NAME}
+            APP_SECRET_KEY: ${APP_SECRET_KEY}
+            GOOGLE_OAUTH2_CLIENT_ID: ${GOOGLE_OAUTH2_CLIENT_ID}
+            GOOGLE_OAUTH2_SECRET_KEY: ${GOOGLE_OAUTH2_SECRET_KEY}
+            FACEBOOK_OAUTH2_CLIENT_ID: ${FACEBOOK_OAUTH2_CLIENT_ID}
+            FACEBOOK_OAUTH2_SECRET_KEY: ${FACEBOOK_OAUTH2_SECRET_KEY}
+            __name__: ${__name__}
+            CSRF_TOKEN_SECRET_KEY: ${CSRF_TOKEN_SECRET_KEY}
+            UPLOAD_FOLDER_DIRECTORY: ${UPLOAD_FOLDER_DIRECTORY}
+            ALLOWED_EXTENSIONS: ${ALLOWED_EXTENSIONS}
+        depends_on:
+            - mysqlFilmweb
+    mysqlFilmweb:
+        container_name: filmweb-db
+        image: mysql:8.3.0
+        command: --init-file /data/application/init.sql
+        volumes:
+            - ./init.sql:/data/application/init.sql
+        ports:
+            - '3307:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE_NAME: ${MYSQL_DATABASE_NAME}
