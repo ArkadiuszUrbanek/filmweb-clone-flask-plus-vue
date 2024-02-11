@@ -21,6 +21,7 @@ class MovieRepository():
     dbMovie.title = movie.title
     dbMovie.premiere_date = movie.premiere_date
     dbMovie.length_time = movie.length_time
+    dbMovie.file_path = movie.file_path
     dbMovie.description = movie.description
     dbMovie.directors = movie.directors
     dbMovie.actors = movie.actors

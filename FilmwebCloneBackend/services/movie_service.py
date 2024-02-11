@@ -25,6 +25,10 @@ class MovieService():
     movieDb = self.movieRepository.get(id)
     return self.movieMappers.movieSqlAlchemyToDtoMapper(movieDb).to_dict()
 
+  def findById(self, id):
+    movieDb = self.movieRepository.get(id)
+    return movieDb
+
   def addReview(self, movieId, reviewDto: CreateReviewDto):
     movieDb = self.movieRepository.get(movieId)
     reviewDb = self.reviewRepository.create(movieId, self.reviewMappers.createReviewDtoToSqlAlchemyMapper(reviewDto))

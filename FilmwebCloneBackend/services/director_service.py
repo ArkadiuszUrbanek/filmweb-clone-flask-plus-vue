@@ -19,6 +19,10 @@ class DirectorService():
     directorDb = self.directorRepository.get(id)
     return self.directorMappers.directorSqlAlchemyToDtoMapper(directorDb).to_dict()
 
+  def findById(self, id):
+    directorDb = self.directorRepository.get(id)
+    return directorDb
+
   def create(self, directorDto: CreateDirectorDto):
     directorDb = self.directorMappers.createDirectorDtoToSqlAlchemyMapper(directorDto)
     return self.directorMappers.directorSqlAlchemyToDtoMapper(self.directorRepository.create(directorDb)).to_dict()
