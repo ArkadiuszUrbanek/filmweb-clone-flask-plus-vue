@@ -157,10 +157,19 @@ export default {
           duration.setUTCMinutes(minutes);
           duration.setUTCSeconds(0);
           duration.setUTCMilliseconds(0);
+
+          console.log(film.id);
+          const poster = this.getMovieImage(film.id).then((response) => {
+            return response.data;
+          });
+          console.log(poster);
+          const srcimg = 'data:image/jpg;base64,' + poster;
+          console.log(srcimg);
           return {
             ...film,
             premiere_date: new Date(film.premiere_date.toString()),
             duration: duration,
+            file_path: poster,
           };
         });
       } catch (error) {
@@ -178,6 +187,19 @@ export default {
     //   }
     //   return outputGenre;
     // },
+    async getMovieImage(movieId: number) {
+      try {
+        return await axios.get<any>(`/movie/${movieId}/image`, {
+          'Content-Type': `multipart/form-data`,
+        });
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: 'Failed to download the poster.',
+          type: 'error',
+        });
+      }
+    },
   },
 };
 </script>

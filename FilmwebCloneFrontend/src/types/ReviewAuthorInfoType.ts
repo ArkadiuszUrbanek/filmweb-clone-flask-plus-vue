@@ -1,8 +1,8 @@
-import type { GenderType } from "./GenderType"
+import type { GenderType } from './GenderType';
 
 export type ReviewAuthorInfoType = {
-    id: number
-    firstName: string
-    lastName: string
-    gender: GenderType
-}
+  id: number;
+  first_name: string;
+  last_name: string;
+  gender: string;
+};

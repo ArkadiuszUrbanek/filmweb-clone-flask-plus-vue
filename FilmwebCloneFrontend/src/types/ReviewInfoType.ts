@@ -1,10 +1,11 @@
-import type { ReviewAuthorInfoType } from "./ReviewAuthorInfoType"
+import type { ReviewAuthorInfoType } from './ReviewAuthorInfoType';
 
 export type ReviewInfoType = {
-    id: number
-    rating: number
-    title: string
-    description: string
-    creationDate: Date
-    author: ReviewAuthorInfoType
-}
+  id: number;
+  mark: number;
+  description: string;
+  creation_date: Date;
+  user_id: number;
+  movie_id: number;
+  author: ReviewAuthorInfoType;
+};

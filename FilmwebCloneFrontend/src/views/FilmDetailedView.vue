@@ -9,6 +9,10 @@
     </div>
     <div class="flex w-full">
       <div class="w-1/3 pr-4 relative">
+        <!-- <img
+          v-bind:src="film.file_path"
+          class="shadow-lg h-[300px] absolute right-0 top-0 mt-[-200px] mr-[16px]"
+        /> -->
         <img
           v-bind:src="film.file_path"
           class="shadow-lg h-[300px] absolute right-0 top-0 mt-[-200px] mr-[16px]"
@@ -95,9 +99,11 @@
             </div>
             <p class="ml-1 text-gray-300">
               {{
-                `${film.average_rating.toFixed(2)} / ${maxStarRating} (${
-                  film.reviews_count
-                } review${film.reviews_count !== 1 ? 's' : ''})`
+                `${Number(film.average_rating).toFixed(
+                  2,
+                )} / ${maxStarRating} (${film.reviews_count} review${
+                  film.reviews_count !== 1 ? 's' : ''
+                })`
               }}
             </p>
           </div>
@@ -119,13 +125,13 @@
                 >
                   <img
                     class="absolute top-0 left-0 w-full h-full object-cover"
-                    v-bind:src="actor.picturePath"
+                    v-bind:src="actor.file_path"
                   />
                   <div
                     class="absolute bottom-0 left-0 right-0 p-2 text-center bg-gradient-to-b from-transparent to-black text-white opacity-0 group-hover:opacity-100 duration-300 translate-y-6 group-hover:translate-y-0"
                   >
                     <p class="text-lg font-medium">
-                      {{ `${actor.firstName} ${actor.lastName}` }}
+                      {{ `${actor.first_name} ${actor.last_name}` }}
                     </p>
                   </div>
                 </div>
@@ -222,9 +228,9 @@
               </svg>
             </div>
 
-            <h1 class="text-lg text-gray-700 font-semibold">
+            <!-- <h1 class="text-lg text-gray-700 font-semibold">
               {{ review.title }}
-            </h1>
+            </h1> -->
             <div class="flex items-center mt-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -236,7 +242,7 @@
                   d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
                 />
               </svg>
-              <p class="ml-1">{{ `${review.rating} / ${maxStarRating}` }}</p>
+              <p class="ml-1">{{ `${review.mark} / ${maxStarRating}` }}</p>
             </div>
             <p class="mt-4 text-md text-gray-600 text-justify">
               {{ review.description }}
@@ -317,11 +323,12 @@
                   <circle cx="29" cy="28" r="2" fill="#18193f" />
                 </svg>
                 <div class="text-sm font-semibold">
-                  {{ `${review.author.firstName} ${review.author.lastName}` }} •
+                  {{ `${review.author.first_name} ${review.author.last_name}` }}
+                  •
                   <span class="font-normal">
                     {{
                       getFormattedReviewDateString(
-                        review.creationDate.toString(),
+                        review.creation_date.toString(),
                       )
                     }}</span
                   >
@@ -341,6 +348,7 @@ import type { PersonPositionType } from '../types/PersonPositionType';
 import type { FilmDetailedInfoType } from '../types/FilmDetailedInfoType';
 import type { PersonBasicInfoType } from '../types/PersonBasicInfoType';
 import type { ReviewInfoType } from '../types/ReviewInfoType';
+import type { GenderType } from '../types/GenderType';
 import NavbarComponent from '../components/NavbarComponent.vue';
 import ReviewModalComponent from '../components/ReviewModalComponent.vue';
 import { container, promptModal } from 'jenesius-vue-modal';
@@ -348,6 +356,7 @@ import { Carousel, Navigation, Slide } from 'vue3-carousel';
 import axios from 'axios';
 
 import 'vue3-carousel/dist/carousel.css';
+import type { ReviewAuthorInfoType } from '@/types/ReviewAuthorInfoType';
 
 export default {
   components: {
@@ -359,8 +368,8 @@ export default {
   },
   mounted() {
     this.getFilm();
-    this.getActors();
-    this.getReviews();
+    //this.getActors();
+    //this.getReviews();
   },
   props: ['filmId'],
   data() {
@@ -395,9 +404,50 @@ export default {
   methods: {
     async getFilm() {
       try {
-        const response = await axios.get<FilmDetailedInfoType>(
-          `/Film/${this.$props.filmId}`,
-        );
+        const response = await axios
+          .get<FilmDetailedInfoType>(`/movie/${this.$props.filmId}`)
+          .then((response) => {
+            console.log(response);
+            //this.reviews = response.data.reviews;
+            this.reviews = response.data.reviews;
+            console.log(response.data.reviews);
+            this.reviews = response.data.reviews.map(
+              (review: ReviewInfoType) => {
+                if (this.$store.getters.sub === review.user_id)
+                  this.currentUserReviewId = review.id;
+                let requestAuthor = {
+                  id: 0,
+                  first_name: '',
+                  last_name: '',
+                  gender: '',
+                };
+                axios
+                  .get<ReviewAuthorInfoType>(`/user/${review.id}`)
+                  .then((author) => {
+                    console.log(author);
+                    requestAuthor.id = author.data.id;
+                    requestAuthor.first_name = author.data.first_name;
+                    requestAuthor.last_name = author.data.last_name;
+                    requestAuthor.gender = 'MALE';
+                  });
+                console.log(requestAuthor);
+                console.log('Zawracam:');
+                return {
+                  ...review,
+                  creation_date: new Date(review.creation_date),
+                  author: {
+                    id: requestAuthor.id,
+                    first_name: requestAuthor.first_name,
+                    last_name: requestAuthor.last_name,
+                    gender: 'MALE',
+                  },
+                };
+              },
+            );
+            this;
+            console.log(this.reviews);
+            return response;
+          });
 
         const [, hours, minutes] = response.data.length_time
           .toString()
@@ -409,10 +459,17 @@ export default {
         // duration.setUTCMinutes(minutes);
         // duration.setUTCSeconds(0);
         // duration.setUTCMilliseconds(0);
+        console.log(this.reviews);
+        console.log(response.data.actors);
+        this.actors = response.data.actors;
 
+        let poster;
+        poster = this.getMovieImage(response.data.id);
+        console.log(poster);
         this.film = {
           ...response.data,
           premiere_date: new Date(response.data.premiere_date.toString()),
+          //file_path: poster,
           //  length_time: duration,
         };
       } catch (error) {
@@ -422,47 +479,99 @@ export default {
         });
       }
     },
-    async getActors() {
-      try {
-        const response = await axios.get('/Person/all', {
-          params: {
-            personPositions: 'Actor' as PersonPositionType,
-            filmId: this.$props.filmId,
-          },
-        });
+    // async getActors() {
+    //   try {
+    //     const response = await axios.get('/actor', {
+    //       params: {
+    //         personPositions: 'Actor' as PersonPositionType,
+    //         filmId: this.$props.filmId,
+    //       },
+    //     });
 
-        this.actors = response.data;
-      } catch (error) {
-        this.$toast.open({
-          message: 'Failed to download the actors.',
-          type: 'error',
-        });
-      }
-    },
-    async getReviews() {
+    //     this.actors = response.data;
+    //   } catch (error) {
+    //     this.$toast.open({
+    //       message: 'Failed to download the actors.',
+    //       type: 'error',
+    //     });
+    //   }
+    // },
+    async getUser(userId: number) {
       try {
-        const response = await axios.get<ReviewInfoType[]>('/Review/all', {
-          params: {
-            filmId: this.$props.filmId,
-          },
-        });
-
-        this.reviews = response.data.map((review: ReviewInfoType) => {
-          if (this.$store.getters.sub === review.author.id)
-            this.currentUserReviewId = review.id;
-          return {
-            ...review,
-            creationDateDate: new Date(review.creationDate),
-            author: { ...review.author },
-          };
-        });
+        // const response = await axios.get<ReviewAuthorInfoType>(
+        //   `/user/${userId}`,
+        // );
+        // console.log(response);
+        // return {
+        //   id: response.data.id,
+        //   first_name: response.data.first_name,
+        //   last_name: response.data.last_name,
+        //   gender: 'Male',
+        // };
+        return await axios.get<ReviewAuthorInfoType>(`/user/${userId}`);
       } catch (error) {
         this.$toast.open({
           message: 'Failed to download the review.',
           type: 'error',
         });
+        return {
+          id: 0,
+          first_name: '',
+          last_name: '',
+          gender: 'Male',
+        };
       }
     },
+    async getMovieImage(movieId: number) {
+      try {
+        let image;
+        return await axios
+          .get(`/movie/${movieId}/image`, {
+            headers: {
+              'Content-Type': 'Blob',
+            },
+          })
+          .then((image) => {
+            console.log(image);
+            console.log(image.data);
+            const blob = new Blob([image.data]);
+            const url = window.URL.createObjectURL(new Blob([image.data]));
+            console.log(blob);
+            console.log(url);
+          });
+        //return 'http://localhost:5000/movie/1/image';
+      } catch (error) {
+        console.log(error);
+        this.$toast.open({
+          message: 'Failed to download the poster.',
+          type: 'error',
+        });
+      }
+    },
+    // async getReviews() {
+    //   try {
+    //     const response = await axios.get<ReviewInfoType[]>('/review', {
+    //       params: {
+    //         filmId: this.$props.filmId,
+    //       },
+    //     });
+
+    //     this.reviews = response.data.map((review: ReviewInfoType) => {
+    //       if (this.$store.getters.sub === review.user_id)
+    //         this.currentUserReviewId = review.id;
+    //       return {
+    //         ...review,
+    //         creation_date: new Date(review.creation_date),
+    //         //author: { ...review.user_id },
+    //       };
+    //     });
+    //   } catch (error) {
+    //     this.$toast.open({
+    //       message: 'Failed to download the review.',
+    //       type: 'error',
+    //     });
+    //   }
+    // },
     async onAddReview() {
       const modal = (await promptModal(ReviewModalComponent)) as {
         title: string;
@@ -472,7 +581,7 @@ export default {
 
       try {
         const response = await axios.put<number>(
-          '/Review',
+          '/review',
           {
             ...modal,
             filmId: this.$props.filmId,
@@ -484,7 +593,8 @@ export default {
           },
         );
         this.currentUserReviewId = response.data;
-        this.getReviews();
+        //this.getReviews();
+        this.getFilm();
       } catch (error) {
         this.$toast.open({
           message: 'Failed to add review.',
@@ -530,7 +640,8 @@ export default {
         );
 
         this.currentUserReviewId = undefined;
-        this.getReviews();
+        //this.getReviews();
+        this.getFilm();
       } catch (error) {
         this.$toast.open({
           message: 'Failed to remove the review.',

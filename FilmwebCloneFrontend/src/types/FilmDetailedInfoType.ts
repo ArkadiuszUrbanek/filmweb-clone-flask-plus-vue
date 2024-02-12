@@ -1,4 +1,6 @@
 import type { FilmGenreClass } from './FilmGenreType';
+import type { PersonBasicInfoType } from './PersonBasicInfoType';
+import type { ReviewInfoType } from './ReviewInfoType';
 
 export type FilmDetailedInfoType = {
   id: number;
@@ -10,6 +12,8 @@ export type FilmDetailedInfoType = {
   file_path: string;
   bannerPath: string;
   genres: FilmGenreClass[];
+  reviews: ReviewInfoType[];
+  actors: PersonBasicInfoType[];
   reviews_count: number;
   average_rating: number;
 };
