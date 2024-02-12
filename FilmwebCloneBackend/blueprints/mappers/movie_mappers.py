@@ -17,6 +17,7 @@ class MovieMappers():
     jsonForm = json.loads(request.form.get('data'))
     createMovieDto = CreateMovieDto()
     createMovieDto.title = jsonForm.get('title') if jsonForm.get('title') != None else ''
+    createMovieDto.subtitle = jsonForm.get('subtitle') if jsonForm.get('subtitle') != None else ''
     createMovieDto.premiere_date = jsonForm.get('premiere_date')
     createMovieDto.length_time =jsonForm.get('length_time') if jsonForm.get('length_time') != None else 0
     createMovieDto.description = jsonForm.get('description') if jsonForm.get('description') != None else ''
@@ -42,12 +43,21 @@ class MovieMappers():
     movieDto = MovieDto()
     movieDto.id = movieDb.id
     movieDto.title = movieDb.title
+    movieDto.subtitle = movieDb.subtitle
     movieDto.premiere_date = movieDb.premiere_date
     movieDto.length_time = movieDb.length_time
     movieDto.description = movieDb.description
+    movieDto.file_path = movieDb.file_path
+    movieDto.reviews_count = len(movieDb.reviews)
     movieDto.reviews = []
+    movieRating = 0
     for review in movieDb.reviews:
+        movieRating = review.mark
         movieDto.reviews.append(reviewMappers.reviewSqlAlchemyToDtoMapper(review))
+    if movieDto.reviews_count != 0:
+        movieDto.average_rating = movieRating / movieDto.reviews_count
+    else:
+       movieDto.average_rating = 0
     movieDto.forums = []
     for forum in movieDb.forums:
       movieDto.forums.append(forumMappers.forumSqlAlchemyToDtoMapper(forum))
@@ -63,4 +73,4 @@ class MovieMappers():
     return movieDto
 
   def createMovieDtoToSqlAlchemyMapper(self, createMovieDto: CreateMovieDto) -> Movie:
-    return Movie(createMovieDto.title, createMovieDto.premiere_date, createMovieDto.length_time, createMovieDto.file_path, createMovieDto.description)
+    return Movie(createMovieDto.title, createMovieDto.subtitle, createMovieDto.premiere_date, createMovieDto.length_time, createMovieDto.file_path, createMovieDto.description)

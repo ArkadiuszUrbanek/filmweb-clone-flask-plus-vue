@@ -1,5 +1,6 @@
 class CreateMovieDto():
   title = ''
+  subtitle = ''
   premiere_date = None
   length_time = 0
   description = ''

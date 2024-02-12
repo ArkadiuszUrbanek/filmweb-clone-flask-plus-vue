@@ -1,10 +1,11 @@
+import os
 from dotenv import dotenv_values
 
 config = dotenv_values('.env')
 
-MOVIE_FOLDER_PATH = config['UPLOAD_FOLDER_DIRECTORY'] + '\\movie'
-ACTOR_FOLDER_PATH = config['UPLOAD_FOLDER_DIRECTORY'] + '\\actor'
-DIRECTOR_FOLDER_PATH = config['UPLOAD_FOLDER_DIRECTORY'] + '\\director'
+MOVIE_FOLDER_PATH = os.path.join(config['UPLOAD_FOLDER_DIRECTORY'], 'movie')
+ACTOR_FOLDER_PATH = os.path.join(config['UPLOAD_FOLDER_DIRECTORY'], 'actor')
+DIRECTOR_FOLDER_PATH = os.path.join(config['UPLOAD_FOLDER_DIRECTORY'], 'director')
 
 def allowed_file(filename):
     return '.' in filename and \
