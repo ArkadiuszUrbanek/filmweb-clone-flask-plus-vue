@@ -4,6 +4,7 @@ from flask import Request, url_for
 from werkzeug.utils import secure_filename
 from blueprints.mappers import allowed_file, DIRECTOR_FOLDER_PATH
 from dtos import DirectorDto, CreateDirectorDto
+from enums import UserGender
 from models import Director
 
 class DirectorMappers():
@@ -14,6 +15,9 @@ class DirectorMappers():
     createDirectorDto.first_name = jsonForm.get('first_name') if jsonForm.get('first_name') != None else ''
     createDirectorDto.last_name = jsonForm.get('last_name') if jsonForm.get('last_name') != None else ''
     createDirectorDto.nationality = jsonForm.get('nationality') if jsonForm.get('nationality') != None else ''
+    createDirectorDto.gender = jsonForm.get('gender') if jsonForm.get('gender') != None else UserGender.MALE
+    createDirectorDto.height = jsonForm.get('height') if jsonForm.get('height') != None else 0
+    createDirectorDto.birth_date = jsonForm.get('birth_date')
     createDirectorDto.description = jsonForm.get('description') if jsonForm.get('description') != None else ''
     if 'file' in request.files:
         file = request.files['file']
@@ -30,8 +34,18 @@ class DirectorMappers():
     directorDto.last_name = directorDb.last_name
     directorDto.nationality = directorDb.nationality
     directorDto.description = directorDb.description
+    directorDto.gender = directorDb.gender
+    directorDto.height = directorDb.height
+    directorDto.birth_date = directorDb.birth_date
     directorDto.file_path = url_for('static', filename = 'director/' + directorDb.file_path)
     return directorDto
 
   def createDirectorDtoToSqlAlchemyMapper(self, createDirectorDto: CreateDirectorDto) -> Director:
-    return Director(createDirectorDto.first_name, createDirectorDto.last_name, createDirectorDto.nationality, createDirectorDto.file_path, createDirectorDto.description)
+    return Director(createDirectorDto.first_name,
+                    createDirectorDto.last_name,
+                    createDirectorDto.nationality,
+                    createDirectorDto.file_path,
+                    createDirectorDto.description,
+                    createDirectorDto.gender,
+                    createDirectorDto.height,
+                    createDirectorDto.birth_date)
