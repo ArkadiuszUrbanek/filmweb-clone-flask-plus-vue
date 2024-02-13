@@ -1,6 +1,5 @@
-from flask import Blueprint, jsonify, request, send_from_directory
+from flask import Blueprint, jsonify, request
 from blueprints import ActorMappers
-from blueprints.mappers import ACTOR_FOLDER_PATH
 from controllers import HTTP_OK_STATUS, HTTP_CREATED_STATUS
 from services import ActorService
 
@@ -16,11 +15,6 @@ def getAllActor():
 @actor_blueprint.route('/<int:id>', methods = ['GET'])
 def getActor(id):
   return jsonify(actorService.get(id)), HTTP_OK_STATUS
-
-@actor_blueprint.route('/<int:id>/image', methods = ['GET'])
-def getActorsImage(id):
-  actorFilePath = actorService.findById(id).file_path
-  return send_from_directory(ACTOR_FOLDER_PATH, actorFilePath, as_attachment = True), HTTP_OK_STATUS
 
 @actor_blueprint.route('/', methods = ['POST'])
 def createActor():

@@ -250,7 +250,7 @@
             <div class="flex justify-between items-center">
               <div class="mt-4 flex items-center space-x-2">
                 <svg
-                  v-if="review.author.gender === 'Male'"
+                  v-if="review.user_gender === 'MALE'"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 48 48"
                   width="48px"
@@ -282,7 +282,7 @@
                   />
                 </svg>
                 <svg
-                  v-else-if="review.author.gender === 'Female'"
+                  v-else-if="review.user_gender === 'FEMALE'"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 48 48"
                   width="48px"
@@ -323,7 +323,7 @@
                   <circle cx="29" cy="28" r="2" fill="#18193f" />
                 </svg>
                 <div class="text-sm font-semibold">
-                  {{ `${review.author.first_name} ${review.author.last_name}` }}
+                  {{ `${review.user_first_name} ${review.user_last_name}` }}
                   •
                   <span class="font-normal">
                     {{
@@ -357,6 +357,7 @@ import axios from 'axios';
 
 import 'vue3-carousel/dist/carousel.css';
 import type { ReviewAuthorInfoType } from '@/types/ReviewAuthorInfoType';
+import type { AxiosResponse } from 'node_modules/axios/index.cjs';
 
 export default {
   components: {
@@ -404,50 +405,60 @@ export default {
   methods: {
     async getFilm() {
       try {
-        const response = await axios
-          .get<FilmDetailedInfoType>(`/movie/${this.$props.filmId}`)
-          .then((response) => {
-            console.log(response);
-            //this.reviews = response.data.reviews;
-            this.reviews = response.data.reviews;
-            console.log(response.data.reviews);
-            this.reviews = response.data.reviews.map(
-              (review: ReviewInfoType) => {
-                if (this.$store.getters.sub === review.user_id)
-                  this.currentUserReviewId = review.id;
-                let requestAuthor = {
-                  id: 0,
-                  first_name: '',
-                  last_name: '',
-                  gender: '',
-                };
-                axios
-                  .get<ReviewAuthorInfoType>(`/user/${review.id}`)
-                  .then((author) => {
-                    console.log(author);
-                    requestAuthor.id = author.data.id;
-                    requestAuthor.first_name = author.data.first_name;
-                    requestAuthor.last_name = author.data.last_name;
-                    requestAuthor.gender = 'MALE';
-                  });
-                console.log(requestAuthor);
-                console.log('Zawracam:');
-                return {
-                  ...review,
-                  creation_date: new Date(review.creation_date),
-                  author: {
-                    id: requestAuthor.id,
-                    first_name: requestAuthor.first_name,
-                    last_name: requestAuthor.last_name,
-                    gender: 'MALE',
-                  },
-                };
-              },
-            );
-            this;
-            console.log(this.reviews);
-            return response;
-          });
+        const response = await axios.get<FilmDetailedInfoType>(
+          `/movie/${this.$props.filmId}`,
+        );
+        //.then(async (response) => {
+        console.log(response);
+        // this.reviews = response.data.reviews;
+        // console.log(response.data.reviews);
+        //this.reviews = await this.mapReviewType(response);
+        //console.log(this.reviews);
+        // this.reviews = response.data.reviews.map(
+        //   async (review: ReviewInfoType) => {
+        //     if (this.$store.getters.sub === review.user_id)
+        //       this.currentUserReviewId = review.id;
+        //     let requestAuthor = {
+        //       id: 0,
+        //       first_name: '',
+        //       last_name: '',
+        //       gender: '',
+        //     };
+        //     await axios
+        //       .get<ReviewAuthorInfoType>(`/user/${review.id}`)
+        //       .then((author) => {
+        //         console.log(author);
+        //         requestAuthor.id = author.data.id;
+        //         requestAuthor.first_name = author.data.first_name;
+        //         requestAuthor.last_name = author.data.last_name;
+        //         requestAuthor.gender = 'MALE';
+        //       });
+        //     console.log(requestAuthor);
+        //     console.log('Zawracam:');
+        //     return {
+        //       ...review,
+        //       creation_date: new Date(review.creation_date),
+        //       author: {
+        //         id: requestAuthor.id,
+        //         first_name: requestAuthor.first_name,
+        //         last_name: requestAuthor.last_name,
+        //         gender: 'MALE',
+        //       },
+        //     };
+        //   },
+        // );
+        //this.reviews = this.mapReviewType(response);
+        //console.log(this.reviews);
+        //return response;
+        //});
+        this.reviews = response.data.reviews.map((review: ReviewInfoType) => {
+          if (this.$store.getters.sub === review.user_id)
+            this.currentUserReviewId = review.id;
+          return {
+            ...review,
+            creation_date: new Date(review.creation_date),
+          };
+        });
 
         const [, hours, minutes] = response.data.length_time
           .toString()
@@ -462,14 +473,17 @@ export default {
         console.log(this.reviews);
         console.log(response.data.actors);
         this.actors = response.data.actors;
+        this.actors = this.actors.map((actor: PersonBasicInfoType) => {
+          return {
+            ...actor,
+            file_path: `${axios.defaults.baseURL}${actor.file_path}`,
+          };
+        });
 
-        let poster;
-        poster = this.getMovieImage(response.data.id);
-        console.log(poster);
         this.film = {
           ...response.data,
           premiere_date: new Date(response.data.premiere_date.toString()),
-          //file_path: poster,
+          file_path: `${axios.defaults.baseURL}${response.data.file_path}`,
           //  length_time: duration,
         };
       } catch (error) {
@@ -496,6 +510,44 @@ export default {
     //     });
     //   }
     // },
+    // async mapReviewType(response: any): Promise<ReviewInfoType[]> {
+    //   const gender: GenderType = 'MALE';
+    //   const mapped = response.data.reviews.map(
+    //     async (review: ReviewInfoType) => {
+    //       if (this.$store.getters.sub === review.user_id)
+    //         this.currentUserReviewId = review.id;
+    //       let requestAuthor = {
+    //         id: 0,
+    //         first_name: '',
+    //         last_name: '',
+    //         gender: gender,
+    //       };
+    //       await axios
+    //         .get<ReviewAuthorInfoType>(`/user/${review.id}`)
+    //         .then((author) => {
+    //           console.log(author);
+    //           requestAuthor.id = author.data.id;
+    //           requestAuthor.first_name = author.data.first_name;
+    //           requestAuthor.last_name = author.data.last_name;
+    //           requestAuthor.gender = gender;
+    //         });
+    //       console.log(requestAuthor);
+    //       console.log('Zawracam:');
+    //       return {
+    //         ...review,
+    //         creation_date: new Date(review.creation_date),
+    //         author: {
+    //           id: requestAuthor.id,
+    //           first_name: requestAuthor.first_name,
+    //           last_name: requestAuthor.last_name,
+    //           gender: requestAuthor.gender,
+    //         },
+    //       };
+    //     },
+    //   );
+    //   console.log(mapped);
+    //   return mapped;
+    // },
     async getUser(userId: number) {
       try {
         // const response = await axios.get<ReviewAuthorInfoType>(
@@ -520,32 +572,6 @@ export default {
           last_name: '',
           gender: 'Male',
         };
-      }
-    },
-    async getMovieImage(movieId: number) {
-      try {
-        let image;
-        return await axios
-          .get(`/movie/${movieId}/image`, {
-            headers: {
-              'Content-Type': 'Blob',
-            },
-          })
-          .then((image) => {
-            console.log(image);
-            console.log(image.data);
-            const blob = new Blob([image.data]);
-            const url = window.URL.createObjectURL(new Blob([image.data]));
-            console.log(blob);
-            console.log(url);
-          });
-        //return 'http://localhost:5000/movie/1/image';
-      } catch (error) {
-        console.log(error);
-        this.$toast.open({
-          message: 'Failed to download the poster.',
-          type: 'error',
-        });
       }
     },
     // async getReviews() {

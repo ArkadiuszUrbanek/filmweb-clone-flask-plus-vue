@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Request
+from flask import Request, url_for
 from werkzeug.utils import secure_filename
 from blueprints.mappers import allowed_file, DIRECTOR_FOLDER_PATH
 from dtos import DirectorDto, CreateDirectorDto
@@ -30,6 +30,7 @@ class DirectorMappers():
     directorDto.last_name = directorDb.last_name
     directorDto.nationality = directorDb.nationality
     directorDto.description = directorDb.description
+    directorDto.file_path = url_for('static', filename = 'director/' + directorDb.file_path)
     return directorDto
 
   def createDirectorDtoToSqlAlchemyMapper(self, createDirectorDto: CreateDirectorDto) -> Director:

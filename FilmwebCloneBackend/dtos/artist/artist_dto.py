@@ -10,4 +10,5 @@ class ArtistDto(CreateArtistDto):
       'last_name' : self.last_name,
       'nationality' : self.nationality,
       'description' : self.description,
+      'file_path' : self.file_path,
     }

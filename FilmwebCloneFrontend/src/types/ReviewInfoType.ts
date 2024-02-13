@@ -7,5 +7,7 @@ export type ReviewInfoType = {
   creation_date: Date;
   user_id: number;
   movie_id: number;
-  author: ReviewAuthorInfoType;
+  user_first_name: string;
+  user_last_name: string;
+  user_gender: string;
 };

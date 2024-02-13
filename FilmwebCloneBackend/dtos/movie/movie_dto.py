@@ -13,6 +13,7 @@ class MovieDto(CreateMovieDto):
       'premiere_date' : str(self.premiere_date),
       'length_time' : str(self.length_time),
       'description' : self.description,
+      'file_path' : self.file_path,
       'reviews' : [review.to_dict() for review in self.reviews],
       'forums' : [forum.to_dict() for forum in self.forums],
       'directors' : [director.to_dict() for director in self.directors],

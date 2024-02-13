@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Request
+from flask import Request, url_for
 from werkzeug.utils import secure_filename
 from blueprints.mappers import allowed_file, MOVIE_FOLDER_PATH
 from dtos import MovieDto, CreateMovieDto
@@ -47,12 +47,12 @@ class MovieMappers():
     movieDto.premiere_date = movieDb.premiere_date
     movieDto.length_time = movieDb.length_time
     movieDto.description = movieDb.description
-    movieDto.file_path = movieDb.file_path
+    movieDto.file_path = url_for('static', filename = 'movie/' + movieDb.file_path)
     movieDto.reviews_count = len(movieDb.reviews)
     movieDto.reviews = []
     movieRating = 0
     for review in movieDb.reviews:
-        movieRating = review.mark
+        movieRating += review.mark
         movieDto.reviews.append(reviewMappers.reviewSqlAlchemyToDtoMapper(review))
     if movieDto.reviews_count != 0:
         movieDto.average_rating = movieRating / movieDto.reviews_count

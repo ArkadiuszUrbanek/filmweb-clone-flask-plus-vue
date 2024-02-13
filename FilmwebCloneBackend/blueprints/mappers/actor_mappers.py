@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Request
+from flask import Request, url_for
 from werkzeug.utils import secure_filename
 from blueprints.mappers import allowed_file, ACTOR_FOLDER_PATH
 from dtos import ActorDto, CreateActorDto
@@ -30,6 +30,7 @@ class ActorMappers():
     actorDto.last_name = actorDb.last_name
     actorDto.nationality = actorDb.nationality
     actorDto.description = actorDb.description
+    actorDto.file_path = url_for('static', filename = 'actor/' + actorDb.file_path)
     return actorDto
 
   def createActorDtoToSqlAlchemyMapper(self, createActorDto: CreateActorDto) -> Actor:

@@ -1,6 +1,5 @@
-from flask import Blueprint, jsonify, request, send_from_directory
+from flask import Blueprint, jsonify, request
 from blueprints import MovieMappers, ReviewMappers
-from blueprints.mappers import MOVIE_FOLDER_PATH
 from controllers import HTTP_OK_STATUS, HTTP_CREATED_STATUS
 from services import MovieService
 
@@ -17,11 +16,6 @@ def getAllMovies():
 @movie_blueprint.route('/<int:id>', methods = ['GET'])
 def getMovie(id):
   return jsonify(movieService.get(id)), HTTP_OK_STATUS
-
-@movie_blueprint.route('/<int:id>/image', methods = ['GET'])
-def getMoviesImage(id):
-  movieFilePath = movieService.findById(id).file_path
-  return send_from_directory(MOVIE_FOLDER_PATH, movieFilePath, as_attachment = True), HTTP_OK_STATUS
 
 @movie_blueprint.route('/<int:movieId>/review', methods = ['POST'])
 def addReview(movieId):
