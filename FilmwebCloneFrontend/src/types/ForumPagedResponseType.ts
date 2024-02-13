@@ -1,16 +1,16 @@
 export type ForumPagedResponseType = {
-    pagesCount: number
-    resultsCount: number
-    currentPageResultsCount: number
-    forums: {
-        id: number
-        name: string
-        creationDate: Date
-        messagesCount: number
-        author: {
-            id: number
-            firstName: string
-            lastName: string
-        }  
-    }[]
-}
+  pages_count: number;
+  results_count: number;
+  current_page_results_count: number;
+  forums: {
+    id: number;
+    name: string;
+    creation_date: Date;
+    messages_count: number;
+    author: {
+      id: number;
+      firstName: string;
+      lastName: string;
+    };
+  }[];
+};

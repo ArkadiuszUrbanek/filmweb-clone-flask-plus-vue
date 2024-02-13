@@ -1,1 +1,1 @@
-export type ForumSortOrderType = 'Ascending' | 'Descending'
+export type ForumSortOrderType = 'asc' | 'desc';

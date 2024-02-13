@@ -33,7 +33,7 @@ class ActorMappers():
     actorDto.first_name = actorDb.first_name
     actorDto.last_name = actorDb.last_name
     actorDto.nationality = actorDb.nationality
-    actorDto.file_path = url_for('static', filename = 'actor/' + actorDb.file_path)
+    actorDto.file_path = url_for('static', filename = 'actor' + os.sep + actorDb.file_path)
     actorDto.description = actorDb.description
     actorDto.gender = actorDb.gender
     actorDto.height = actorDb.height

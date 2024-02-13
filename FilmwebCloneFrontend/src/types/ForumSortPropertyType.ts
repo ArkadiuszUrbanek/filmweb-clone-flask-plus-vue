@@ -1,1 +1,1 @@
-export type ForumSortPropertyType = 'CreationDate' | 'MessagesCount'
+export type ForumSortPropertyType = 'creation_date' | 'messages_count';
