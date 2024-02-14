@@ -10,14 +10,14 @@
           <tr>
             <th>Name</th>
             <th
-              v-on:click="sort('MessagesCount')"
+              v-on:click="sort('messages_count')"
               class="cursor-pointer hover:bg-gray-100 rounded-t-[20px]"
             >
               <div class="flex justify-center">
                 Replies count
-                <template v-if="currentSortingProperty === 'MessagesCount'">
+                <template v-if="currentSortingProperty === 'messages_count'">
                   <svg
-                    v-if="currentSortingOrder === 'Descending'"
+                    v-if="currentSortingOrder === 'desc'"
                     xmlns="http://www.w3.org/2000/svg"
                     class="icon icon-tabler icon-tabler-caret-down-filled"
                     width="24"
@@ -61,14 +61,14 @@
             </th>
             <th>Author</th>
             <th
-              v-on:click="sort('CreationDate')"
+              v-on:click="sort('creation_date')"
               class="cursor-pointer hover:bg-gray-100 rounded-t-[20px]"
             >
               <div class="flex justify-center">
                 Created
-                <template v-if="currentSortingProperty === 'CreationDate'">
+                <template v-if="currentSortingProperty === 'creation_date'">
                   <svg
-                    v-if="currentSortingOrder === 'Descending'"
+                    v-if="currentSortingOrder === 'desc'"
                     xmlns="http://www.w3.org/2000/svg"
                     class="icon icon-tabler icon-tabler-caret-down-filled"
                     width="24"
@@ -124,7 +124,7 @@
             <td>{{ forum.name }}</td>
             <td>
               <div class="grid grid-cols-2">
-                <p class="text-right mr-2">{{ forum.messagesCount }}</p>
+                <p class="text-right mr-2">{{ forum.messages_count }}</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="icon icon-tabler icon-tabler-message"
@@ -146,17 +146,20 @@
                 </svg>
               </div>
             </td>
-            <td>{{ `${forum.author.firstName} ${forum.author.lastName}` }}</td>
+            <td>{{ `${forum.user_first_name} ${forum.user_last_name}` }}</td>
             <td>
               <p>
-                {{ getFormattedDate(forum.creationDate.toString()) }}
+                {{ getFormattedDate(forum.creation_date.toString()) }}
               </p>
               <p>
-                {{ getFormattedTime(forum.creationDate.toString()) }}
+                {{ getFormattedTime(forum.creation_date.toString()) }}
               </p>
             </td>
             <td v-if="isAnyActionAllowed">
-              <div v-if="forum.author.id === $store.getters.sub" class="block">
+              <div
+                v-if="forum.user_first_name === $store.getters.sub"
+                class="block"
+              >
                 <button
                   v-on:click.stop="removeForum(forum.id)"
                   class="m-auto py-[2px] px-[4px] bg-red-500 hover:bg-red-600 shadow-lg flex items-center justify-center rounded font-medium text-white"
@@ -203,7 +206,7 @@
           Previous
         </button>
         <div class="flex space-x-2 items-center">
-          <template v-for="pageNumber in forumPagedResponse.pagesCount">
+          <template v-for="pageNumber in forumPagedResponse.pages_count">
             <button
               v-on:click="getPage(pageNumber)"
               v-bind:disabled="currentPageNumber === pageNumber"
@@ -222,7 +225,7 @@
         <button
           v-on:click="nextPage()"
           v-bind:class="{
-            invisible: currentPageNumber === forumPagedResponse.pagesCount,
+            invisible: currentPageNumber === forumPagedResponse.pages_count,
           }"
           class="flex items-center justify-center px-4 h-8 ml-2 text-base font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700"
         >
@@ -314,13 +317,12 @@ export default {
         this.forumPagedResponse = {
           ...response.data,
           forums: response.data.forums.map((forum) => {
-            if (forum.author.id === this.$store.getters.sub)
+            if (forum.user_id === this.$store.getters.sub)
               this.isAnyActionAllowed = true;
 
             return {
               ...forum,
-              creationDate: new Date(forum.creationDate),
-              author: { ...forum.author },
+              creationDate: new Date(forum.creation_date),
             };
           }),
         };
@@ -352,18 +354,18 @@ export default {
     sort(sortingProperty: ForumSortPropertyType) {
       if (this.currentSortingProperty !== sortingProperty) {
         this.currentSortingProperty = sortingProperty;
-        this.currentSortingOrder = 'Descending';
+        this.currentSortingOrder = 'desc';
       } else {
-        if (this.currentSortingOrder === 'Ascending')
-          this.currentSortingOrder = 'Descending';
-        else if (this.currentSortingOrder === 'Descending')
-          this.currentSortingOrder = 'Ascending';
+        if (this.currentSortingOrder === 'asc')
+          this.currentSortingOrder = 'desc';
+        else if (this.currentSortingOrder === 'desc')
+          this.currentSortingOrder = 'asc';
       }
 
       this.getForums();
     },
     nextPage() {
-      if (this.currentPageNumber === this.forumPagedResponse!.pagesCount)
+      if (this.currentPageNumber === this.forumPagedResponse!.pages_count)
         return;
       this.currentPageNumber++;
       this.getForums();

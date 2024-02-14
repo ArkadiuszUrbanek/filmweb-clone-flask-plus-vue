@@ -47,7 +47,7 @@ class MovieMappers():
     movieDto.premiere_date = movieDb.premiere_date
     movieDto.length_time = movieDb.length_time
     movieDto.description = movieDb.description
-    movieDto.file_path = url_for('static', filename = 'movie' + os.sep + movieDb.file_path)
+    movieDto.file_path = url_for('static', filename = 'movie/' + movieDb.file_path)
     movieDto.reviews_count = len(movieDb.reviews)
     movieDto.reviews = []
     movieRating = 0

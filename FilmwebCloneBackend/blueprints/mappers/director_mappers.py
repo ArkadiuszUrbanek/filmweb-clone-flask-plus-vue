@@ -37,7 +37,7 @@ class DirectorMappers():
     directorDto.gender = directorDb.gender
     directorDto.height = directorDb.height
     directorDto.birth_date = directorDb.birth_date
-    directorDto.file_path = url_for('static', filename = 'director' + os.sep + directorDb.file_path)
+    directorDto.file_path = url_for('static', filename = 'director/' +  directorDb.file_path)
     return directorDto
 
   def createDirectorDtoToSqlAlchemyMapper(self, createDirectorDto: CreateDirectorDto) -> Director:
