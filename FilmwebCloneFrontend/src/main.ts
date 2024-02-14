@@ -11,7 +11,7 @@ import FlagIcon from 'vue-flag-icon';
 import axios from 'axios';
 import ToastPlugin from 'vue-toast-notification';
 
-axios.defaults.baseURL = 'http://127.0.0.1:5000/';
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 const app = createApp(App);
 

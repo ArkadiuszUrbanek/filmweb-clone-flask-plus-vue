@@ -145,7 +145,6 @@ export default {
     async getFilms() {
       try {
         const response = await axios.get<FilmBasicInfoType[]>('/movie');
-        console.log(response);
         this.films = response.data.map((film: FilmBasicInfoType) => {
           const [, hours, minutes] = film.length_time
             .toString()
