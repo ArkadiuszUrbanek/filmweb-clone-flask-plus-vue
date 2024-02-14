@@ -35,7 +35,7 @@ const loginInfoStore = createStore<LoginInfoType>({
       return state.sub
     },
     givenName(state: LoginInfoType) : string | undefined {
-      return state.surname
+      return state.givenName
     },
     surname(state: LoginInfoType) : string | undefined {
       return state.surname

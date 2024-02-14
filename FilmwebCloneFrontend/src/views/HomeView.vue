@@ -144,8 +144,8 @@ export default {
     //new Date().ToISOSting().slice(0, 10)
     async getFilms() {
       try {
-        const response = await axios.get<FilmBasicInfoType[]>('/movie');
-        console.log(response);
+        const response = await axios.get<FilmBasicInfoType[]>('movie/');
+
         this.films = response.data.map((film: FilmBasicInfoType) => {
           const [, hours, minutes] = film.length_time
             .toString()
@@ -166,7 +166,7 @@ export default {
           };
         });
       } catch (error) {
-        console.log(error);
+        
         this.$toast.open({
           message: 'Failed to download the films.',
           type: 'error',

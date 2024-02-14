@@ -19,9 +19,9 @@ class Movie(db.Model):
 
   reviews = db.relationship('Review', backref = 'movie',  cascade = 'all, delete')
   forums = db.relationship('Forum', backref = 'movie')
-  directors = db.relationship('Director', secondary = movie_director, lazy='subquery', backref = db.backref('movies', lazy = 'subquery'))
-  actors = db.relationship('Actor', secondary = movie_actor, lazy='subquery', backref = db.backref('movies', lazy = 'subquery'))
-  genres = db.relationship('Genre', secondary = movie_genre, lazy='subquery', backref = db.backref('movies', lazy = 'subquery'))
+  directors = db.relationship('Director', secondary = movie_director, lazy = 'subquery', backref = db.backref('movies', lazy = 'subquery'))
+  actors = db.relationship('Actor', secondary = movie_actor, lazy = 'subquery', backref = db.backref('movies', lazy = 'subquery'))
+  genres = db.relationship('Genre', secondary = movie_genre, lazy = 'subquery', backref = db.backref('movies', lazy = 'subquery'))
 
   def __init__(self, title, subtitle, premiere_date, length_time, file_path, description, **kwargs):
     super(Movie, self).__init__(**kwargs)
