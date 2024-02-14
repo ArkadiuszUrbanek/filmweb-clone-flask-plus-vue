@@ -344,11 +344,9 @@
 </template>
 
 <script lang="ts">
-import type { PersonPositionType } from '../types/PersonPositionType';
 import type { FilmDetailedInfoType } from '../types/FilmDetailedInfoType';
 import type { PersonBasicInfoType } from '../types/PersonBasicInfoType';
 import type { ReviewInfoType } from '../types/ReviewInfoType';
-import type { GenderType } from '../types/GenderType';
 import NavbarComponent from '../components/NavbarComponent.vue';
 import ReviewModalComponent from '../components/ReviewModalComponent.vue';
 import { container, promptModal } from 'jenesius-vue-modal';
@@ -356,8 +354,6 @@ import { Carousel, Navigation, Slide } from 'vue3-carousel';
 import axios from 'axios';
 
 import 'vue3-carousel/dist/carousel.css';
-import type { ReviewAuthorInfoType } from '@/types/ReviewAuthorInfoType';
-import type { AxiosResponse } from 'node_modules/axios/index.cjs';
 
 export default {
   components: {
@@ -369,8 +365,6 @@ export default {
   },
   mounted() {
     this.getFilm();
-    //this.getActors();
-    //this.getReviews();
   },
   props: ['filmId'],
   data() {
@@ -408,49 +402,6 @@ export default {
         const response = await axios.get<FilmDetailedInfoType>(
           `/movie/${this.$props.filmId}`,
         );
-        //.then(async (response) => {
-        console.log(response);
-        // this.reviews = response.data.reviews;
-        // console.log(response.data.reviews);
-        //this.reviews = await this.mapReviewType(response);
-        //console.log(this.reviews);
-        // this.reviews = response.data.reviews.map(
-        //   async (review: ReviewInfoType) => {
-        //     if (this.$store.getters.sub === review.user_id)
-        //       this.currentUserReviewId = review.id;
-        //     let requestAuthor = {
-        //       id: 0,
-        //       first_name: '',
-        //       last_name: '',
-        //       gender: '',
-        //     };
-        //     await axios
-        //       .get<ReviewAuthorInfoType>(`/user/${review.id}`)
-        //       .then((author) => {
-        //         console.log(author);
-        //         requestAuthor.id = author.data.id;
-        //         requestAuthor.first_name = author.data.first_name;
-        //         requestAuthor.last_name = author.data.last_name;
-        //         requestAuthor.gender = 'MALE';
-        //       });
-        //     console.log(requestAuthor);
-        //     console.log('Zawracam:');
-        //     return {
-        //       ...review,
-        //       creation_date: new Date(review.creation_date),
-        //       author: {
-        //         id: requestAuthor.id,
-        //         first_name: requestAuthor.first_name,
-        //         last_name: requestAuthor.last_name,
-        //         gender: 'MALE',
-        //       },
-        //     };
-        //   },
-        // );
-        //this.reviews = this.mapReviewType(response);
-        //console.log(this.reviews);
-        //return response;
-        //});
         this.reviews = response.data.reviews.map((review: ReviewInfoType) => {
           if (this.$store.getters.sub === review.user_id)
             this.currentUserReviewId = review.id;
@@ -465,13 +416,6 @@ export default {
           .split(':')
           .map(Number);
 
-        // const duration = new Date();
-        // duration.setUTCHours(hours);
-        // duration.setUTCMinutes(minutes);
-        // duration.setUTCSeconds(0);
-        // duration.setUTCMilliseconds(0);
-        console.log(this.reviews);
-        console.log(response.data.actors);
         this.actors = response.data.actors;
         this.actors = this.actors.map((actor: PersonBasicInfoType) => {
           return {
@@ -484,7 +428,6 @@ export default {
           ...response.data,
           premiere_date: new Date(response.data.premiere_date.toString()),
           file_path: `${axios.defaults.baseURL}${response.data.file_path}`,
-          //  length_time: duration,
         };
       } catch (error) {
         this.$toast.open({
@@ -493,111 +436,6 @@ export default {
         });
       }
     },
-    // async getActors() {
-    //   try {
-    //     const response = await axios.get('/actor', {
-    //       params: {
-    //         personPositions: 'Actor' as PersonPositionType,
-    //         filmId: this.$props.filmId,
-    //       },
-    //     });
-
-    //     this.actors = response.data;
-    //   } catch (error) {
-    //     this.$toast.open({
-    //       message: 'Failed to download the actors.',
-    //       type: 'error',
-    //     });
-    //   }
-    // },
-    // async mapReviewType(response: any): Promise<ReviewInfoType[]> {
-    //   const gender: GenderType = 'MALE';
-    //   const mapped = response.data.reviews.map(
-    //     async (review: ReviewInfoType) => {
-    //       if (this.$store.getters.sub === review.user_id)
-    //         this.currentUserReviewId = review.id;
-    //       let requestAuthor = {
-    //         id: 0,
-    //         first_name: '',
-    //         last_name: '',
-    //         gender: gender,
-    //       };
-    //       await axios
-    //         .get<ReviewAuthorInfoType>(`/user/${review.id}`)
-    //         .then((author) => {
-    //           console.log(author);
-    //           requestAuthor.id = author.data.id;
-    //           requestAuthor.first_name = author.data.first_name;
-    //           requestAuthor.last_name = author.data.last_name;
-    //           requestAuthor.gender = gender;
-    //         });
-    //       console.log(requestAuthor);
-    //       console.log('Zawracam:');
-    //       return {
-    //         ...review,
-    //         creation_date: new Date(review.creation_date),
-    //         author: {
-    //           id: requestAuthor.id,
-    //           first_name: requestAuthor.first_name,
-    //           last_name: requestAuthor.last_name,
-    //           gender: requestAuthor.gender,
-    //         },
-    //       };
-    //     },
-    //   );
-    //   console.log(mapped);
-    //   return mapped;
-    // },
-    async getUser(userId: number) {
-      try {
-        // const response = await axios.get<ReviewAuthorInfoType>(
-        //   `/user/${userId}`,
-        // );
-        // console.log(response);
-        // return {
-        //   id: response.data.id,
-        //   first_name: response.data.first_name,
-        //   last_name: response.data.last_name,
-        //   gender: 'Male',
-        // };
-        return await axios.get<ReviewAuthorInfoType>(`/user/${userId}`);
-      } catch (error) {
-        this.$toast.open({
-          message: 'Failed to download the review.',
-          type: 'error',
-        });
-        return {
-          id: 0,
-          first_name: '',
-          last_name: '',
-          gender: 'Male',
-        };
-      }
-    },
-    // async getReviews() {
-    //   try {
-    //     const response = await axios.get<ReviewInfoType[]>('/review', {
-    //       params: {
-    //         filmId: this.$props.filmId,
-    //       },
-    //     });
-
-    //     this.reviews = response.data.map((review: ReviewInfoType) => {
-    //       if (this.$store.getters.sub === review.user_id)
-    //         this.currentUserReviewId = review.id;
-    //       return {
-    //         ...review,
-    //         creation_date: new Date(review.creation_date),
-    //         //author: { ...review.user_id },
-    //       };
-    //     });
-    //   } catch (error) {
-    //     this.$toast.open({
-    //       message: 'Failed to download the review.',
-    //       type: 'error',
-    //     });
-    //   }
-    // },
     async onAddReview() {
       const modal = (await promptModal(ReviewModalComponent)) as {
         title: string;
@@ -610,7 +448,8 @@ export default {
           '/review',
           {
             ...modal,
-            filmId: this.$props.filmId,
+            movie_id: this.$props.filmId,
+            user_id: this.$store.getters.sub,
           },
           {
             headers: {
@@ -619,7 +458,6 @@ export default {
           },
         );
         this.currentUserReviewId = response.data;
-        //this.getReviews();
         this.getFilm();
       } catch (error) {
         this.$toast.open({
@@ -666,7 +504,6 @@ export default {
         );
 
         this.currentUserReviewId = undefined;
-        //this.getReviews();
         this.getFilm();
       } catch (error) {
         this.$toast.open({

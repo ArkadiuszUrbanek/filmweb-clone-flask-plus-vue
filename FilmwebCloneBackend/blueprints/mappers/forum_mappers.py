@@ -74,10 +74,8 @@ class ForumMappers():
     lastElement = firstElement + int(pagination.page_size)
     chosenForums = forumsDto[firstElement : lastElement]
     forumPage.current_page_results_count = len(chosenForums)
-    print(chosenForums)
     chosenForums = self.sortForumsByKey(chosenForums, pagination.sorting_property, pagination.sorting_order)
     forumPage.forums = chosenForums
-    print(chosenForums)
     return forumPage
 
   def requestToForumPaginationParamerers(self, request: Request) -> ForumPaginationParameters:

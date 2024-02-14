@@ -7,6 +7,11 @@ export type ForumMessagesInfoType = {
   tags: string;
   creation_date: Date;
   modfication_date: Date;
+  messages_count: number;
+  user_id: number;
+  user_first_name: string;
+  user_last_name: string;
+  movie_id: number;
   messages: {
     id: number;
     text: string;

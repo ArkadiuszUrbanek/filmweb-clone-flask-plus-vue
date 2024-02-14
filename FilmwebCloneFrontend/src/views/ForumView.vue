@@ -384,7 +384,7 @@ export default {
     },
     async removeForum(forumId: number) {
       try {
-        const response = await axios.delete(`/Forum/${forumId}/delete`, {
+        const response = await axios.delete(`/forum/${forumId}`, {
           headers: {
             Authorization: `Bearer ${this.$store.getters.token}`,
           },
@@ -401,12 +401,12 @@ export default {
     async onAddForum() {
       const modal = (await promptModal(ForumModalComponent)) as {
         name: string;
-        initialMessageText: string;
+        description: string;
       };
 
       try {
         const response = await axios.put<number>(
-          '/Forum',
+          '/forum',
           { ...modal },
           {
             headers: {

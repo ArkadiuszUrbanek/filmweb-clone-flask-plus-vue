@@ -166,20 +166,12 @@ export default {
           };
         });
       } catch (error) {
-        console.log(error);
         this.$toast.open({
           message: 'Failed to download the films.',
           type: 'error',
         });
       }
     },
-    // async getGenres(genres: FilmGenreClass[]) {
-    //   let outputGenre = '';
-    //   for (let genre of genres) {
-    //     outputGenre = genre.name + ' ';
-    //   }
-    //   return outputGenre;
-    // },
   },
 };
 </script>
