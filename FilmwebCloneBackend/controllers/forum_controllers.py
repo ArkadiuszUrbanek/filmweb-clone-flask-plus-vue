@@ -11,7 +11,8 @@ forum_blueprint = Blueprint('forum_blueprint', __name__, url_prefix = '/forum')
 
 @forum_blueprint.route('/', methods = ['GET'])
 def getAllForums():
-  return jsonify(forumService.findAll()), HTTP_OK_STATUS
+  forumPage = forumMappers.forumDtoTableToForumPagedDto(forumService.findAll(), forumMappers.requestToForumPaginationParamerers(request))
+  return jsonify(forumPage.to_dict()), HTTP_OK_STATUS
 
 @forum_blueprint.route('/<int:id>', methods = ['GET'])
 def getForum(id):

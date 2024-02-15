@@ -1,0 +1,9 @@
+version: '3'
+services:
+  filmweb-frontend:
+    container_name: filmweb-frontend
+    build: .
+    ports:
+      - '5137:5137'
+    environment:
+      BACKEND_BASE_URL: ${BACKEND_BASE_URL}

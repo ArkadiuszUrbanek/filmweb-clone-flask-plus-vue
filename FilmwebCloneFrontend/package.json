@@ -16,6 +16,7 @@
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "axios": "^1.6.5",
+    "https": "^1.0.0",
     "jenesius-vue-modal": "^1.10.3",
     "jwt-decode": "^4.0.0",
     "vue": "^3.3.11",
@@ -28,7 +29,7 @@
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.2",
-    "@types/node": "^18.19.3",
+    "@types/node": "^18.19.15",
     "@vitejs/plugin-vue": "^4.5.2",
     "@vue/tsconfig": "^0.5.0",
     "autoprefixer": "^10.4.17",

@@ -1,6 +1,7 @@
 from flask import Request
 from dtos import MessageDto, CreateMessageDto
-from models import Message
+from repositories import UserRepository
+from models import Message, User
 
 class MessageMappers():
 
@@ -12,11 +13,16 @@ class MessageMappers():
     return createMessageDto
 
   def messageSqlAlchemyToDtoMapper(self, messageDb: Message) -> MessageDto:
+    userRepository = UserRepository()
     messageDto = MessageDto()
     messageDto.id = messageDb.id
     messageDto.text = messageDb.text
     messageDto.forum_id = messageDb.forum_id
     messageDto.user_id = messageDb.user_id
+    userDb: User = userRepository.get(messageDb.user_id)
+    messageDto.user_first_name = userDb.first_name
+    messageDto.user_last_name = userDb.last_name
+    messageDto.user_gender = userDb.gender
     messageDto.main_message_id = messageDb.main_message
     messageDto.creation_date = messageDb.creation_date
     messageDto.modification_date = messageDb.modification_date
