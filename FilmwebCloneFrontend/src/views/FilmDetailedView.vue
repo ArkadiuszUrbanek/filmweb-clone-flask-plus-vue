@@ -250,7 +250,7 @@
             <div class="flex justify-between items-center">
               <div class="mt-4 flex items-center space-x-2">
                 <svg
-                  v-if="review.user_gender === 'MALE'"
+                  v-if="review.user_gender === 'Male'"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 48 48"
                   width="48px"
@@ -282,7 +282,7 @@
                   />
                 </svg>
                 <svg
-                  v-else-if="review.user_gender === 'FEMALE'"
+                  v-else-if="review.user_gender === 'Female'"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 48 48"
                   width="48px"

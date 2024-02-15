@@ -14,7 +14,7 @@
         >
           <div class="flex items-center relative">
             <svg
-              v-if="message.user_gender === 'MALE'"
+              v-if="message.user_gender === 'Male'"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
               width="48px"
@@ -46,7 +46,7 @@
               />
             </svg>
             <svg
-              v-else-if="message.user_gender === 'FEMALE'"
+              v-else-if="message.user_gender === 'Female'"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
               width="48px"
