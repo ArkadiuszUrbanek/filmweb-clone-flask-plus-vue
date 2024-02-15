@@ -124,7 +124,7 @@
                     v-bind:class="{ 'cursor-not-allowed': v$.$invalid }"
                     class="block bg-gradient-to-r from-yellow-500 via-red-500 to-pink-500 text-white pt-3 pb-3 pl-6 pr-6 rounded w-full mt-5"
                 >
-                    Signup
+                    Sign up
                 </button>
             </form>
             <router-link to="/login" class="mt-6 mb-3 text-center block">
@@ -187,7 +187,7 @@
             onSubmit() {
                 this.v$.$validate()
                 .then(() => {
-                    axios.post('Auth/register', {
+                    axios.post('auth/register', {
                         firstName: this.firstName,
                         lastName: this.lastName,
                         gender: this.gender,
@@ -218,4 +218,4 @@
             }
         }
     }
-</script>../types/GenderType
+</script>

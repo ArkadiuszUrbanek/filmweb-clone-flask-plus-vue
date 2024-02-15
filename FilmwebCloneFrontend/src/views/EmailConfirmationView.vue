@@ -55,20 +55,17 @@
         data() {
             return {
                 token: undefined as string | undefined,
-                userId: undefined as string | undefined,
                 success: undefined as boolean | undefined
             }
         },
         mounted() {
             this.token = this.$route.query.token as string | undefined
-            this.userId = this.$route.query.userId as string | undefined
 
-            if (!this.token || !this.userId) return
+            if (!this.token) return
 
-            axios.patch('Auth/email-confirm', 
+            axios.patch('auth/email/confirm', 
             {
-                token: this.token,
-                userId: this.userId
+                token: this.token
             }).then((response) => {
                 this.success = true
                 this.$toast.open({

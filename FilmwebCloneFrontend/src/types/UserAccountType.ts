@@ -1,0 +1,1 @@
+export type UserAccountType = 'App' | 'Google' | 'Facebook'

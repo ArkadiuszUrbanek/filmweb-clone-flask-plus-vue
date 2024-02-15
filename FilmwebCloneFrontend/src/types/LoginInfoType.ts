@@ -1,12 +1,13 @@
 import type { GenderType } from "./GenderType"
+import type { UserAccountType } from "./UserAccountType"
 import type { UserRoleType } from "./UserRoleType"
 
 export type LoginInfoType = {
-    token?: string,
-    sub?: number,
-    givenName?: string,
-    surname?: string,
-    email?: string,
+    userId: number,
+    firstName: string,
+    lastName: string,
+    email: string,
     gender?: GenderType,
-    role?: UserRoleType
+    role: UserRoleType,
+    accountType: UserAccountType
 }

@@ -11,3 +11,4 @@ from .genre import Genre
 from .message import Message
 from .movie import Movie
 from .review import Review
+from .salt import Salt
