@@ -19,6 +19,7 @@ class MovieRepository():
   def update(self, id, movie):
     dbMovie = self.get(id)
     dbMovie.title = movie.title
+    dbMovie.subtitle = movie.subtitle
     dbMovie.premiere_date = movie.premiere_date
     dbMovie.length_time = movie.length_time
     dbMovie.file_path = movie.file_path

@@ -9,6 +9,7 @@ class Movie(db.Model):
 
   id = db.Column(db.Integer, primary_key = True, autoincrement = True)
   title = db.Column(db.String(100), nullable = False)
+  subtitle = db.Column(db.String(500), nullable = False)
   premiere_date = db.Column(db.DateTime, nullable = True, server_default = utcnow())
   length_time = db.Column(db.Integer, nullable = True)
   file_path = db.Column(db.String(500), nullable = True)
@@ -22,9 +23,10 @@ class Movie(db.Model):
   actors = db.relationship('Actor', secondary = movie_actor, lazy='subquery', backref = db.backref('movies', lazy = 'subquery'))
   genres = db.relationship('Genre', secondary = movie_genre, lazy='subquery', backref = db.backref('movies', lazy = 'subquery'))
 
-  def __init__(self, title, premiere_date, length_time, file_path, description, **kwargs):
+  def __init__(self, title, subtitle, premiere_date, length_time, file_path, description, **kwargs):
     super(Movie, self).__init__(**kwargs)
     self.title = title
+    self.subtitle = subtitle
     self.premiere_date = premiere_date
     self.length_time = length_time
     self.file_path = file_path

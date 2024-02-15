@@ -9,5 +9,9 @@ class ArtistDto(CreateArtistDto):
       'first_name' : self.first_name,
       'last_name' : self.last_name,
       'nationality' : self.nationality,
+      'gender' : str(self.gender),
+      'height' : str(self.height),
+      'birth_date' : str(self.birth_date),
       'description' : self.description,
+      'file_path' : self.file_path,
     }

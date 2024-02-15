@@ -1,23 +1,24 @@
-import './assets/main.css'
+import './assets/main.css';
+import './assets/tailwind.css';
+import 'vue-toast-notification/dist/theme-bootstrap.css';
 
-import { createApp } from 'vue'
-import App from './App.vue'
-import axios from 'axios'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import loginInfoStore from './store';
+import VuelidatePlugin from '@vuelidate/core';
+import FlagIcon from 'vue-flag-icon';
+import axios from 'axios';
+import ToastPlugin from 'vue-toast-notification';
 
-axios.defaults.baseURL = 'https://127.0.0.1:5000/'
-axios.defaults.xsrfCookieName = 'X-CSRFToken'
-axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
-axios.interceptors.request.use(config => {
-    const csrfToken: string | undefined = getCSRFTokenFromCookie()
-    if (csrfToken) config.headers[axios.defaults.xsrfHeaderName!] = csrfToken
-    return config
-})
+const app = createApp(App);
 
-function getCSRFTokenFromCookie(): string | undefined {
-    const parts: string[] = `; ${document.cookie}`.split(`; ${axios.defaults.xsrfCookieName}=`)
-    if (parts.length === 2) return parts.pop()!.split(';').shift()
-    else return undefined
-}
+app.use(router);
+app.use(loginInfoStore);
+app.use(VuelidatePlugin);
+app.use(FlagIcon);
+app.use(ToastPlugin, { position: 'top-right' });
 
-createApp(App).mount('#app')
+app.mount('#app');

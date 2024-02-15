@@ -21,6 +21,7 @@ class UserRepository():
     dbUser.first_name = user.first_name
     dbUser.last_name = user.last_name
     dbUser.email = user.email
+    dbUser.gender = user.gender
     dbUser.password_hash = user.password_hash
     dbUser.account_type = user.account_type
     dbUser.role = user.role

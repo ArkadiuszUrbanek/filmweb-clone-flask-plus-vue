@@ -1,6 +1,7 @@
 from flask import Request
 from dtos import ReviewDto, CreateReviewDto
-from models import Review
+from repositories import UserRepository
+from models import Review, User
 
 class ReviewMappers():
 
@@ -13,6 +14,8 @@ class ReviewMappers():
     return createReviewDto
 
   def reviewSqlAlchemyToDtoMapper(self, reviewDb: Review) -> ReviewDto:
+    userRepository = UserRepository()
+    userDb: User = userRepository.get(reviewDb.user_id)
     reviewDto = ReviewDto()
     reviewDto.id = reviewDb.id
     reviewDto.mark = reviewDb.mark
@@ -21,6 +24,9 @@ class ReviewMappers():
     reviewDto.modification_date = reviewDb.modification_date
     reviewDto.user_id = reviewDb.user_id
     reviewDto.movie_id = reviewDb.movie_id
+    reviewDto.user_first_name = userDb.first_name
+    reviewDto.user_last_name = userDb.last_name
+    reviewDto.user_gender = userDb.gender
     return reviewDto
 
   def createReviewDtoToSqlAlchemyMapper(self, createReviewDto: CreateReviewDto):

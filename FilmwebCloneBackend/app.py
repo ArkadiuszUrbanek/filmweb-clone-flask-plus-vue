@@ -7,7 +7,7 @@ from dotenv import dotenv_values
 
 config = dotenv_values('.env')
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='./uploads')
 
 app.config['SECRET_KEY'] = config['APP_SECRET_KEY']
 app.config['SESSION_COOKIE_DOMAIN'] = '127.0.0.1'
@@ -53,6 +53,6 @@ app.register_blueprint(director_blueprint)
 app.register_blueprint(actor_blueprint)
 
 if __name__ == '__main__':
-    app.run(host = '127.0.0.1', port = 5000, debug = True, ssl_context = 'adhoc')
+    app.run(host = '127.0.0.1', port = 5000, debug = True, ssl_context = ('server.crt', 'server.key'))
 if __name__ == '__dev__':
-    app.run(host = '0.0.0.0', port = 5000, debug = True, ssl_context = 'adhoc')
+    app.run(host = '0.0.0.0', port = 5000, debug = True, ssl_context = ('server.crt', 'server.key'))

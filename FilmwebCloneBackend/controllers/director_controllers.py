@@ -1,6 +1,5 @@
-from flask import Blueprint, jsonify, request, send_from_directory
+from flask import Blueprint, jsonify, request
 from blueprints import DirectorMappers
-from blueprints.mappers import DIRECTOR_FOLDER_PATH
 from controllers import HTTP_OK_STATUS, HTTP_CREATED_STATUS
 from services import DirectorService
 
@@ -16,11 +15,6 @@ def getAllDirectors():
 @director_blueprint.route('/<int:id>', methods = ['GET'])
 def getDirector(id):
   return jsonify(directorService.get(id)), HTTP_OK_STATUS
-
-@director_blueprint.route('/<int:id>/image', methods = ['GET'])
-def getDirectorsImage(id):
-  directorFilePath = directorService.findById(id).file_path
-  return send_from_directory(DIRECTOR_FOLDER_PATH, directorFilePath, as_attachment = True), HTTP_OK_STATUS
 
 @director_blueprint.route('/', methods = ['POST'])
 def createDirector():
