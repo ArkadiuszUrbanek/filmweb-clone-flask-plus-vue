@@ -13,6 +13,7 @@ from werkzeug.exceptions import InternalServerError, Unauthorized, BadRequest, G
 from itsdangerous import SignatureExpired, BadSignature
 from secrets import token_hex
 from dotenv import dotenv_values
+import json
 
 config = dotenv_values('.env')
 
@@ -163,7 +164,20 @@ def login():
 
     login_user(user)
 
-    return Response(status = HTTPStatus.NO_CONTENT)
+    return Response(
+        response = json.dumps(
+            {
+                "userId": user.id,
+                "firstName": user.first_name,
+                "lastName": user.last_name,
+                "email": user.email,
+                "gender": user.gender.value.capitalize(),
+                "role": user.role.value.capitalize(),
+                "accountType": user.account_type.value.capitalize()
+            }
+        ),
+        status = HTTPStatus.OK,
+        mimetype = 'application/json')
 
 @auth_blueprint.route('/login/google', methods = ['GET'])
 def requestGoogleLogin():
@@ -219,10 +233,26 @@ def googleCallback():
         )
         db.session.add(user)
         db.session.commit()
+        db.session.flush()
+        db.session.refresh(user)
     
     login_user(user)
 
-    return jsonify({'data': me.data, 'redirect': request.args.get('next')})
+    #return jsonify({'data': me.data, 'redirect': request.args.get('next')})
+    return Response(
+        response = json.dumps(
+            {
+                "userId": user.id,
+                "firstName": user.first_name,
+                "lastName": user.last_name,
+                "email": user.email,
+                "gender": user.gender.value.capitalize(),
+                "role": user.role.value.capitalize(),
+                "accountType": user.account_type.value.capitalize()
+            }
+        ),
+        status = HTTPStatus.OK,
+        mimetype = 'application/json')
 
 @auth_blueprint.route('/login/facebook/callback', methods = ['GET'])
 def facebookCallback():

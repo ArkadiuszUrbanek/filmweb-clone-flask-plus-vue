@@ -67,7 +67,7 @@ app.register_blueprint(director_blueprint)
 app.register_blueprint(actor_blueprint)
 
 if __name__ == '__main__':
-    app.run(host = '127.0.0.1', port = 5000, debug = True)# , ssl_context = 'adhoc'
+    app.run(host = '127.0.0.1', port = 5000, debug = True)#, ssl_context = 'adhoc' 
 
 if __name__ == '__dev__':
     app.run(host = '0.0.0.0', port = 5000, debug = True, ssl_context = 'adhoc')
